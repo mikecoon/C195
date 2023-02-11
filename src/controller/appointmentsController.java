@@ -4,7 +4,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import model.Appointment;
 import DAO.appointmentDB;
 
@@ -21,6 +23,16 @@ public class appointmentsController implements Initializable {
     RadioButton allButton;
     @FXML
     TableView<Appointment> appointmentTable;
+    @FXML private TableColumn<?, ?> appointmentID;
+    @FXML private TableColumn<?, ?> appointmentTitle;
+    @FXML private TableColumn<?, ?> appointmentType;
+    @FXML private TableColumn<?, ?> appointmentDescription;
+    @FXML private TableColumn<?, ?> appointmentLocation;
+    @FXML private TableColumn<?, ?> appointmentStart;
+    @FXML private TableColumn<?, ?> appointmentEnd;
+    @FXML private TableColumn<?, ?> appointmentContact;
+    @FXML private TableColumn<?, ?> appointmentCustomerID;
+
 
 
 
@@ -31,11 +43,23 @@ public class appointmentsController implements Initializable {
         ObservableList<Appointment> appointments = null;
         try{
             appointments = appointmentDB.getAllAppointments();
+            //System.out.println(appointments);
         }
         catch (SQLException e){
-            e.printStackTrace();
+            System.out.println("error");
             //come back to this and add logic incase of connection error
         }
+        appointmentID.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+        appointmentTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        appointmentType.setCellValueFactory(new PropertyValueFactory<>("type"));
+        appointmentDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        appointmentLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
+        appointmentStart.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
+        appointmentEnd.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
+        appointmentContact.setCellValueFactory(new PropertyValueFactory<>("contactID"));
+        appointmentCustomerID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+        appointmentTable.setItems(appointments);
+
 
 
     }

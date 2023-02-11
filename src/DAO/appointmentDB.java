@@ -14,6 +14,7 @@ public class appointmentDB {
         String sql = "SELECT * FROM appointments";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
+        //System.out.println(rs);
         while(rs.next()) {
             int appointmentID = rs.getInt("Appointment_ID");
             String title = rs.getString("Title");
@@ -23,16 +24,17 @@ public class appointmentDB {
             Timestamp startDateTime = rs.getTimestamp("Start");
             Timestamp endDateTime = rs.getTimestamp("End");
             int contactID = rs.getInt("Contact_ID");
-            String contactName = rs.getString("Contact_Name");
             int customerID = rs.getInt("Customer_ID");
             int userID = rs.getInt("User_ID");
             Timestamp createDate = rs.getTimestamp("Create_Date");
-            String createBy = rs.getString("Create_By");
             Timestamp lastUpdateDateTime = rs.getTimestamp("Last_Update");
             String lastUpdatedBy = rs.getString("Last_Updated_By");
+            //System.out.println(startDateTime);
             Appointment appointment = new Appointment(appointmentID, title, type, description, location, startDateTime, endDateTime, contactID,
-                    contactName,customerID,userID,createDate,createBy,lastUpdateDateTime,lastUpdatedBy);
+                    customerID,userID,createDate,lastUpdateDateTime,lastUpdatedBy);
+            //System.out.println(appointment.getStartDateTime());
             appointmentOL.add(appointment);
+
 
         }
         ps.close();
