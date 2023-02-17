@@ -15,9 +15,8 @@ import model.Appointment;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 public class addAppointmentController {
     @FXML TextField addAppointmentID; //might not need
@@ -66,7 +65,9 @@ public class addAppointmentController {
                     addAppointmentStartTime.getValue() != null && addAppointmentEndTime.getValue() != null && addAppointmentCustomerID.getValue() != null ){
 
                 checkDate(startDT,endDT,startDate,endDate);
-                //validateOverlap
+                checkOverlap(startDT,endDT,startDate,endDate,customerID);
+
+
 
             }
         } catch (SQLException throwables){
@@ -83,15 +84,30 @@ public class addAppointmentController {
         window.show();
     }
 
-    public void checkOverlap(LocalDateTime startDT, LocalDateTime endDT, LocalDate startDate, LocalDate endDate, Integer customerID){
-        ObservableList<Appointment> appointments = appointmentDAO.getCustomerAppointments()
+    public void checkOverlap(LocalDateTime startDT, LocalDateTime endDT, LocalDate startDate, LocalDate endDate, Integer customerID) throws SQLException{
+        ObservableList<Appointment> appointments = appointmentDAO.getCustomerAppointments(startDate,endDate,customerID);
+        for (Appointment appointment : appointments){
+            LocalDateTime start = appointment.getStartDateTime().toLocalDateTime();
+            LocalDateTime end = appointment.getEndDateTime().toLocalDateTime();
+            if ((start.isBefore(startDT) & end.isAfter(endDT) || (start.isBefore(endDT) & start.isAfter(startDT)) || (end.isBefore(endDT) & end.isAfter(startDT)))){
+
+                System.out.println("Customer overlap, error.");
+                String e = "There is an overlap in customer appointments, try again.";
+                ButtonType clickOkay = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
+                Alert invalidInput = new Alert(Alert.AlertType.WARNING, e, clickOkay);
+                invalidInput.showAndWait();
+                return;
+            }
+        }
+        return;
+
     }
 
     public void checkDate(LocalDateTime startDT, LocalDateTime endDT, LocalDate startDate, LocalDate endDate ){
         ZonedDateTime hoursStart = ZonedDateTime.of(startDate, LocalTime.of(8,0), ZoneId.of("America/New_York"));
         ZonedDateTime hoursEnd = ZonedDateTime.of(endDate, LocalTime.of(22, 0), ZoneId.of("America/New_York"));
-        ZonedDateTime zonedDTstart = ZonedDateTime.of(startDT, userDB.getTimeZone());
-        ZonedDateTime zonedDTend = ZonedDateTime.of(endDT, userDB.getTimeZone());
+        ZonedDateTime zonedDTstart = ZonedDateTime.of(startDT, userDAO.getTimeZone());
+        ZonedDateTime zonedDTend = ZonedDateTime.of(endDT, userDAO.getTimeZone());
 
         //Checks if inputted time and date complies with business hours.
         if(zonedDTstart.isAfter(zonedDTend) && zonedDTend.isBefore(hoursStart) && zonedDTstart.isBefore(hoursStart) && zonedDTstart.isBefore(hoursEnd) && zonedDTend.isBefore(hoursEnd)) {
@@ -104,6 +120,7 @@ public class addAppointmentController {
             return;
 
         }
+        return;
     }
 
 
