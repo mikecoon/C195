@@ -1,17 +1,16 @@
 package DAO;
 
-import java.io.IOException;
-import java.security.KeyStore;
-import java.sql.Connection;
+import helper.JDBC;
+import model.User;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.ZoneId;
 
-import helper.JDBC;
-
 public class userDAO {
     private static ZoneId timeZone;
+    private static User currentUser;
 
     //Attempts to login based on given username and password.
     public static boolean AttemptLogin(String userName, String password) throws SQLException {
@@ -28,6 +27,7 @@ public class userDAO {
             return false;
         } else {
             System.out.println("Log in successful!");
+            currentUser = new User(rs.getInt("User_ID"), rs.getString("User_Name"), rs.getString("Password"));
             timeZone = ZoneId.systemDefault();
             ps.close();
             return true;
@@ -36,6 +36,9 @@ public class userDAO {
     }
     public static ZoneId getTimeZone(){
         return timeZone;
+    }
+    public static User getCurrentUser(){
+        return currentUser;
     }
 
 }

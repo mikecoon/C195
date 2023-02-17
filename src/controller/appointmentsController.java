@@ -48,7 +48,7 @@ public class appointmentsController implements Initializable {
 
         ObservableList<Appointment> appointments = null;
         try{
-            appointments = appointmentDB.getAllAppointments();
+            appointments = appointmentDAO.getAllAppointments();
             //System.out.println(appointments);
         }
         catch (SQLException e){

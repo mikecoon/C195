@@ -1,5 +1,6 @@
 package controller;
 
+import DAO.userDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,15 +10,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.ZoneId;
-import java.util.*;
-import DAO.userDAO;
+import java.util.ResourceBundle;
 
 
 public class loginController implements Initializable {
@@ -50,7 +49,7 @@ public class loginController implements Initializable {
         String userName = loginUsername.getText();
         String password = loginPassword.getText();
 
-        boolean login = userDB.AttemptLogin(userName, password);
+        boolean login = userDAO.AttemptLogin(userName, password);
 
         if (login) {
             Parent parent = FXMLLoader.load(getClass().getResource("/view/appointments.fxml"));

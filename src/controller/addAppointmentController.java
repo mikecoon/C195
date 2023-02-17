@@ -47,28 +47,45 @@ public class addAppointmentController {
             //Time/Date variables
             //String startDate = addAppointmentStartDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             //String endDate = addAppointmentEndDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            LocalDate startDate = addAppointmentStartDate.getValue();
-            LocalDate endDate = addAppointmentEndDate.getValue();
-            DateTimeFormatter dtformat = DateTimeFormatter.ofPattern("HH:mm");
-            LocalDateTime startDT = LocalDateTime.of(addAppointmentStartDate.getValue(),
-                    LocalTime.parse(addAppointmentStartTime.getValue(), dtformat));
-            LocalDateTime endDT = LocalDateTime.of(addAppointmentEndDate.getValue(),
-                    LocalTime.parse(addAppointmentEndTime.getValue(), dtformat));
+
             //String startTime = addAppointmentStartTime.getValue();
             //String endTime = addAppointmentEndTime.getValue();
             //LocalDate localStartDate = addAppointmentStartDate.getValue();
             //LocalDate localEndDate = addAppointmentEndDate.getValue();
-
+            System.out.println("Got here1");
             //input validation
             if(!addAppointmentTitle.getText().isBlank() && !addAppointmentType.getText().isBlank() && !addAppointmentDescription.getText().isBlank() &&
                     addAppointmentStartDate.getValue() != null && !addAppointmentLocation.getText().isBlank() && addAppointmentEndDate.getValue() != null &&
                     addAppointmentStartTime.getValue() != null && addAppointmentEndTime.getValue() != null && addAppointmentCustomerID.getValue() != null ){
+                System.out.println("Got here2");
+
+                LocalDate startDate = addAppointmentStartDate.getValue();
+                LocalDate endDate = addAppointmentEndDate.getValue();
+                DateTimeFormatter dtformat = DateTimeFormatter.ofPattern("HH:mm");
+                LocalDateTime startDT = LocalDateTime.of(addAppointmentStartDate.getValue(),
+                        LocalTime.parse(addAppointmentStartTime.getValue(), dtformat));
+                LocalDateTime endDT = LocalDateTime.of(addAppointmentEndDate.getValue(),
+                        LocalTime.parse(addAppointmentEndTime.getValue(), dtformat));
 
                 checkDate(startDT,endDT,startDate,endDate);
                 checkOverlap(startDT,endDT,startDate,endDate,customerID);
 
+                String currentUser = userDAO.getCurrentUser().getUserName();
+                ZonedDateTime zonedStartDT = ZonedDateTime.of(startDT,userDAO.getTimeZone());
+                ZonedDateTime zonedEndDT = ZonedDateTime.of(endDT,userDAO.getTimeZone());
 
 
+
+
+
+            }
+            else{
+                System.out.println("Input, error.");
+                String e = "Make sure you enter valid input for all fields, try again.";
+                ButtonType clickOkay = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
+                Alert invalidInput = new Alert(Alert.AlertType.WARNING, e, clickOkay);
+                invalidInput.showAndWait();
+                return;
             }
         } catch (SQLException throwables){
             throwables.printStackTrace();
