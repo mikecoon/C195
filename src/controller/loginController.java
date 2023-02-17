@@ -17,7 +17,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.ZoneId;
 import java.util.*;
-import DAO.userDB;
+import DAO.userDAO;
 
 
 public class loginController implements Initializable {

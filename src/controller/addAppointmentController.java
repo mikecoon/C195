@@ -1,7 +1,7 @@
 package controller;
 
-import DAO.appointmentDB;
-import DAO.userDB;
+import DAO.appointmentDAO;
+import DAO.userDAO;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -83,10 +83,8 @@ public class addAppointmentController {
         window.show();
     }
 
-    public void appointmentOverlap(LocalDateTime startDT, LocalDateTime endDT, LocalDate startDate, LocalDate endDate, Integer customerID ) throws SQLException{
-
-        ObservableList<Appointment> appointments = appointmentDB.getAllAppointments();
-
+    public void checkOverlap(LocalDateTime startDT, LocalDateTime endDT, LocalDate startDate, LocalDate endDate, Integer customerID){
+        ObservableList<Appointment> appointments = appointmentDAO.getCustomerAppointments()
     }
 
     public void checkDate(LocalDateTime startDT, LocalDateTime endDT, LocalDate startDate, LocalDate endDate ){

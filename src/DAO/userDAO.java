@@ -10,7 +10,7 @@ import java.time.ZoneId;
 
 import helper.JDBC;
 
-public class userDB {
+public class userDAO {
     private static ZoneId timeZone;
 
     //Attempts to login based on given username and password.
