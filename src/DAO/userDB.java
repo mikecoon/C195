@@ -6,10 +6,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.ZoneId;
 
 import helper.JDBC;
 
 public class userDB {
+    private static ZoneId timeZone;
 
     //Attempts to login based on given username and password.
     public static boolean AttemptLogin(String userName, String password) throws SQLException {
@@ -26,9 +28,14 @@ public class userDB {
             return false;
         } else {
             System.out.println("Log in successful!");
+            timeZone = ZoneId.systemDefault();
             ps.close();
             return true;
         }
 
     }
+    public static ZoneId getTimeZone(){
+        return timeZone;
+    }
+
 }

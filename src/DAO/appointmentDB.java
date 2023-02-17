@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import model.Appointment;
 
 import java.sql.*;
+import java.time.LocalDate;
 
 public class appointmentDB {
 
@@ -39,5 +40,10 @@ public class appointmentDB {
         }
         ps.close();
         return appointmentOL;
+    }
+    public static ObservableList<Appointment> getCustomerAppointments(LocalDate startDate, LocalDate endDate, Integer customerID) throws SQLException{
+        String sql = "SELECT * FROM appointments as a LEFT OUTER JOIN contacts as c " + "ON a.Contact_ID = c.Contact_ID WHERE datediff(a.Start, ?) = 0 AND Customer_ID = ?;";
+        ObservableList<Appointment> appointments = FXCollections.observableArrayList();
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
     }
 }
