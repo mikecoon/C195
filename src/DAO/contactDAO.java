@@ -1,6 +1,8 @@
 package DAO;
 
 import helper.JDBC;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,6 +18,18 @@ public class contactDAO {
         while (rs.next()){
             contactID = rs.getString("Contact_ID");
         }
+        ps.close();
         return contactID;
+    }
+    public static ObservableList<String> getContactNames() throws SQLException {
+        ObservableList<String> contactNames = FXCollections.observableArrayList();
+        String sql = "SELECT * from contacts";
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            contactNames.add(rs.getString("Contact_Name"));
+        }
+        ps.close();
+        return contactNames;
     }
 }

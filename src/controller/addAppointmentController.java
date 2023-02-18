@@ -4,6 +4,7 @@ import DAO.appointmentDAO;
 import DAO.contactDAO;
 import DAO.userDAO;
 import helper.JDBC;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,10 +33,19 @@ public class addAppointmentController {
     @FXML ComboBox<String> addAppointmentStartTime;
     @FXML ComboBox<String> addAppointmentEndTime;
     @FXML ComboBox<Integer> addAppointmentCustomerID;
-    @FXML ComboBox<String> addAppointmentContact; //might not need
+    @FXML ComboBox<String> addAppointmentContact;
     @FXML ComboBox<Integer> addAppointmentUserID; //might not need
     @FXML Button addAppointmentSaveButton;
     @FXML Button addAppointmentCancelButton;
+
+    public void initialize() throws SQLException {
+        addAppointmentContact.setItems(contactDAO.getContactNames());
+        addAppointmentStartTime.setItems(getAppointmentTimes());
+        addAppointmentEndTime.setItems(getAppointmentTimes());
+        addAppointmentUserID.setItems(userDAO.getUserIDs());
+        addAppointmentCustomerID.setItems(appointmentDAO.getCustomerIDs());
+
+    }
 
     public void addAppointmentSaveButton(ActionEvent event) throws IOException, SQLException {
         try{
@@ -95,9 +105,9 @@ public class addAppointmentController {
                 ps.setString(5, type);
                 ps.setString(6, start);
                 ps.setString(7, end);
-                ps.setString(8, ZonedDateTime.now(ZoneOffset.UTC).format(formatter).toString());
+                ps.setString(8, ZonedDateTime.now(ZoneOffset.UTC).format(formatter));
                 ps.setString(9, currentUser);
-                ps.setString(10, ZonedDateTime.now(ZoneOffset.UTC).format(formatter).toString());
+                ps.setString(10, ZonedDateTime.now(ZoneOffset.UTC).format(formatter));
                 ps.setString(11, currentUser);
                 ps.setInt(12, customerID);
                 ps.setInt(13, userID);
@@ -106,7 +116,15 @@ public class addAppointmentController {
 
 
                 ps.execute();
-
+                ButtonType clickOkay = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Appointment succesfully created.", clickOkay);
+                alert.showAndWait();
+                Parent parent = FXMLLoader.load(getClass().getResource("/view/appointments.fxml"));
+                Scene scene = new Scene(parent);
+                Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+                window.setTitle("Appointments");
+                window.setScene(scene);
+                window.show();
 
 
 
@@ -172,10 +190,18 @@ public class addAppointmentController {
         return;
     }
 
-    public void initialize() throws SQLException {
-
+    public ObservableList<String> getAppointmentTimes(){
+        ObservableList<String> apptTimes = FXCollections.observableArrayList();
+        LocalTime startAppointment = LocalTime.MIN.plusHours(8);
+        LocalTime endAppointment = LocalTime.MAX.minusHours(1).minusMinutes(45);
+        if (!startAppointment.equals(0) || !endAppointment.equals(0)){
+            while(startAppointment.isBefore(endAppointment)){
+                apptTimes.add(String.valueOf(startAppointment));
+                startAppointment = startAppointment.plusMinutes(15);
+            }
+        }
+        return apptTimes;
     }
-
 
 
 }

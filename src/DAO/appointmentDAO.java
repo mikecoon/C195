@@ -76,6 +76,27 @@ public class appointmentDAO {
         return appointments;
     }
 
+    public static void deleteAppointment(Integer appointmentID) throws SQLException{
+        String sql = "DELETE FROM appointments WHERE Appointment_ID=?";
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+        ps.setInt(1, appointmentID);
+        ps.executeUpdate();
+        ps.close();
+
+    }
+
+    public static ObservableList<Integer> getCustomerIDs() throws SQLException{
+        ObservableList<Integer> customerIDS = FXCollections.observableArrayList();
+        String sql = "SELECT DISTINCT Customer_ID FROM customers;";
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        while ( rs.next() ) {
+            customerIDS.add(rs.getInt("Customer_ID"));
+        }
+        ps.close();
+        return customerIDS;
+    }
+
 
 }
 

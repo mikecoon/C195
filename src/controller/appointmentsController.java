@@ -1,5 +1,6 @@
 package controller;
 
+import DAO.appointmentDAO;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,16 +9,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
-import DAO.appointmentDAO;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class appointmentsController implements Initializable {
@@ -89,6 +88,23 @@ public class appointmentsController implements Initializable {
 
 
     }
+    public void deleteAppointmentButton(ActionEvent event) throws Exception{
+        try{
+            String appointmentType = appointmentTable.getSelectionModel().getSelectedItem().getType();
+            Integer appointmentID = appointmentTable.getSelectionModel().getSelectedItem().getAppointmentID();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete Appointment: " + appointmentType + " ID: " + appointmentID);
+            Optional<ButtonType> confirm = alert.showAndWait();
+            if(confirm.get() == ButtonType.OK && confirm.isPresent()){
+
+                appointmentDAO.deleteAppointment(appointmentID);
+                ObservableList<Appointment> allAppointmentsList = appointmentDAO.getAllAppointments();
+                appointmentTable.setItems(allAppointmentsList);
+            }
+        } catch (Exception e){
+            System.out.println(e);
+        }
+    }
+
     public void addCustomerButton(ActionEvent event) throws Exception{
         Parent parent = FXMLLoader.load(getClass().getResource("/view/addCustomer.fxml"));
         Scene scene = new Scene(parent);

@@ -1,6 +1,8 @@
 package DAO;
 
 import helper.JDBC;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.User;
 
 import java.sql.PreparedStatement;
@@ -39,6 +41,19 @@ public class userDAO {
     }
     public static User getCurrentUser(){
         return currentUser;
+    }
+
+
+    public static ObservableList<Integer> getUserIDs() throws SQLException{
+        ObservableList<Integer> userIDs = FXCollections.observableArrayList();
+        String sql = "SELECT DISTINCT User_ID FROM users;";
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        while ( rs.next() ) {
+            userIDs.add(rs.getInt("User_ID"));
+        }
+        ps.close();
+        return userIDs;
     }
 
 }

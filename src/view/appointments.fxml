@@ -49,7 +49,7 @@
       </TableView>
       <Button fx:id="addAppointmentButton" layoutX="47.0" layoutY="225.0" onAction="#addAppointmentButton" mnemonicParsing="false" text="Add" />
       <Button fx:id="updateAppointmentButton" layoutX="105.0" layoutY="225.0" onAction="#updateAppointmentButton" mnemonicParsing="false" text="Update" />
-      <Button fx:id="deleteAppointmentButton" layoutX="181.0" layoutY="225.0" mnemonicParsing="false" text="Delete" />
+      <Button fx:id="deleteAppointmentButton" layoutX="181.0" layoutY="225.0" onAction="#deleteAppointmentButton" mnemonicParsing="false" text="Delete" />
       <Button fx:id="addCustomerButton" layoutX="47.0" layoutY="455.0" onAction="#addCustomerButton" mnemonicParsing="false" text="Add" />
       <Button fx:id="updateCustomerButton" layoutX="105.0" layoutY="455.0" onAction="#updateCustomerButton" mnemonicParsing="false" text="Update" />
       <Button fx:id="deleteCustomerButton" layoutX="181.0" layoutY="455.0" mnemonicParsing="false" text="Delete" />
