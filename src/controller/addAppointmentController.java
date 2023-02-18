@@ -1,7 +1,9 @@
 package controller;
 
 import DAO.appointmentDAO;
+import DAO.contactDAO;
 import DAO.userDAO;
+import helper.JDBC;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +16,7 @@ import javafx.stage.Stage;
 import model.Appointment;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -43,6 +46,7 @@ public class addAppointmentController {
             String description = addAppointmentDescription.getText();
             Integer customerID = addAppointmentCustomerID.getValue();
             Integer userID = addAppointmentUserID.getValue();
+            String contactName = addAppointmentContact.getValue();
 
             //Time/Date variables
             //String startDate = addAppointmentStartDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -59,6 +63,7 @@ public class addAppointmentController {
                     addAppointmentStartTime.getValue() != null && addAppointmentEndTime.getValue() != null && addAppointmentCustomerID.getValue() != null ){
                 System.out.println("Got here2");
 
+                //put in try statement
                 LocalDate startDate = addAppointmentStartDate.getValue();
                 LocalDate endDate = addAppointmentEndDate.getValue();
                 DateTimeFormatter dtformat = DateTimeFormatter.ofPattern("HH:mm");
@@ -71,9 +76,36 @@ public class addAppointmentController {
                 checkOverlap(startDT,endDT,startDate,endDate,customerID);
 
                 String currentUser = userDAO.getCurrentUser().getUserName();
-                ZonedDateTime zonedStartDT = ZonedDateTime.of(startDT,userDAO.getTimeZone());
-                ZonedDateTime zonedEndDT = ZonedDateTime.of(endDT,userDAO.getTimeZone());
+                ZonedDateTime zonedStartDT = ZonedDateTime.of(startDT,userDAO.getTimeZone()).withZoneSameInstant(ZoneOffset.UTC);
+                ZonedDateTime zonedEndDT = ZonedDateTime.of(endDT,userDAO.getTimeZone()).withZoneSameInstant(ZoneOffset.UTC);
 
+                //put in a try
+                String sql = "INSERT INTO appointments (Appointment_ID, Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                String start = zonedStartDT.format(formatter).toString();
+                String end = zonedEndDT.format(formatter).toString();
+                String randAppointmentID = String.valueOf((int) (Math.random() * 350));
+
+                ps.setString(1, randAppointmentID);
+                ps.setString(2, title);
+                ps.setString(3, description);
+                ps.setString(4, location);
+                ps.setString(5, type);
+                ps.setString(6, start);
+                ps.setString(7, end);
+                ps.setString(8, ZonedDateTime.now(ZoneOffset.UTC).format(formatter).toString());
+                ps.setString(9, currentUser);
+                ps.setString(10, ZonedDateTime.now(ZoneOffset.UTC).format(formatter).toString());
+                ps.setString(11, currentUser);
+                ps.setInt(12, customerID);
+                ps.setInt(13, userID);
+                //implement
+                ps.setString(14, contactDAO.getContactByID(contactName));
+
+
+                ps.execute();
 
 
 
@@ -139,6 +171,11 @@ public class addAppointmentController {
         }
         return;
     }
+
+    public void initialize() throws SQLException {
+
+    }
+
 
 
 }
