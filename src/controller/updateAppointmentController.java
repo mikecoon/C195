@@ -154,7 +154,7 @@ public class updateAppointmentController {
                 }
 
                 ButtonType clickOkay = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Appointment succesfully created.", clickOkay);
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Appointment succesfully updated.", clickOkay);
                 alert.showAndWait();
                 Parent parent = FXMLLoader.load(getClass().getResource("/view/appointments.fxml"));
                 Scene scene = new Scene(parent);

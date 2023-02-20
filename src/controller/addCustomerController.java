@@ -53,7 +53,10 @@ public class addCustomerController {
         if ( id.isBlank() ||country.isBlank() || division.isBlank() || name.isBlank() || address.isBlank() || zip.isBlank() ||
                 phone.isBlank()){
 
-            //error message
+            ButtonType clickOkay = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
+            Alert invalidInput = new Alert(Alert.AlertType.WARNING, "Make sure all fields are populated correctly.", clickOkay);
+            invalidInput.showAndWait();
+            return;
 
         }
 
@@ -68,6 +71,7 @@ public class addCustomerController {
         ps.setString(6, userDAO.getCurrentUser().getUserName());
         ps.setString(7, ZonedDateTime.now(ZoneOffset.UTC).format(formatter).toString());
         ps.setString(8, userDAO.getCurrentUser().getUserName());
+        //implement division finder
         ps.setInt(9, division);
 
         try{
@@ -79,7 +83,10 @@ public class addCustomerController {
             ButtonType clickOkay = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
             Alert invalidInput = new Alert(Alert.AlertType.WARNING, "Unable to add customer, try again.", clickOkay);
             invalidInput.showAndWait();
+
         }
+
+        //add success message
 
     }
 
