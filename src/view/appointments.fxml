@@ -39,12 +39,11 @@
       </TableView>
       <TableView fx:id="customerTable" layoutX="43.0" layoutY="287.0" prefHeight="159.0" prefWidth="577.0">
          <columns>
-            <TableColumn prefWidth="75.0" text="ID" />
-            <TableColumn prefWidth="75.0" text="Name" />
-            <TableColumn prefWidth="98.00001525878906" text="Address" />
-            <TableColumn prefWidth="108.0" text="Phone Number" />
-            <TableColumn prefWidth="121.0" text="State / Providence" />
-            <TableColumn prefWidth="99.0" text="Postal Code" />
+            <TableColumn fx:id="customerID" prefWidth="75.0" text="ID" />
+            <TableColumn fx:id="customerName" prefWidth="75.0" text="Name" />
+            <TableColumn fx:id="customerAddress" prefWidth="98.00001525878906" text="Address" />
+            <TableColumn fx:id="customerPhoneNumber" prefWidth="108.0" text="Phone Number" />
+            <TableColumn fx:id="customerPostalCode" prefWidth="99.0" text="Postal Code" />
          </columns>
       </TableView>
       <Button fx:id="addAppointmentButton" layoutX="47.0" layoutY="225.0" onAction="#addAppointmentButton" mnemonicParsing="false" text="Add" />

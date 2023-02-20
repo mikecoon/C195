@@ -82,8 +82,22 @@ public class addAppointmentController {
                 LocalDateTime endDT = LocalDateTime.of(addAppointmentEndDate.getValue(),
                         LocalTime.parse(addAppointmentEndTime.getValue(), dtformat));
 
-                checkDate(startDT,endDT,startDate,endDate);
-                checkOverlap(startDT,endDT,startDate,endDate,customerID);
+                if(checkDate(startDT,endDT,startDate,endDate)){
+                    System.out.println("Date / Time is out of range.");
+                    String e = "Business hours are invalid, try again.";
+                    ButtonType clickOkay = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
+                    Alert invalidInput = new Alert(Alert.AlertType.WARNING, e, clickOkay);
+                    invalidInput.showAndWait();
+                    return;
+                }
+                if(checkOverlap(startDT,endDT,startDate,endDate,customerID)){
+                    System.out.println("Customer overlap, error.");
+                    String e = "There is an overlap in customer appointments, try again.";
+                    ButtonType clickOkay = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
+                    Alert invalidInput = new Alert(Alert.AlertType.WARNING, e, clickOkay);
+                    invalidInput.showAndWait();
+                    return;
+                }
 
                 String currentUser = userDAO.getCurrentUser().getUserName();
                 ZonedDateTime zonedStartDT = ZonedDateTime.of(startDT,userDAO.getTimeZone()).withZoneSameInstant(ZoneOffset.UTC);
@@ -151,7 +165,7 @@ public class addAppointmentController {
         window.show();
     }
 
-    public void checkOverlap(LocalDateTime startDT, LocalDateTime endDT, LocalDate startDate, LocalDate endDate, Integer customerID) throws SQLException{
+    public Boolean checkOverlap(LocalDateTime startDT, LocalDateTime endDT, LocalDate startDate, LocalDate endDate, Integer customerID) throws SQLException{
         ObservableList<Appointment> appointments = appointmentDAO.getCustomerAppointments(startDate,endDate,customerID);
         for (Appointment appointment : appointments){
             LocalDateTime start = appointment.getStartDateTime().toLocalDateTime();
@@ -163,14 +177,14 @@ public class addAppointmentController {
                 ButtonType clickOkay = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
                 Alert invalidInput = new Alert(Alert.AlertType.WARNING, e, clickOkay);
                 invalidInput.showAndWait();
-                return;
+                return true;
             }
         }
-        return;
+        return false;
 
     }
 
-    public void checkDate(LocalDateTime startDT, LocalDateTime endDT, LocalDate startDate, LocalDate endDate ){
+    public Boolean checkDate(LocalDateTime startDT, LocalDateTime endDT, LocalDate startDate, LocalDate endDate ){
         ZonedDateTime hoursStart = ZonedDateTime.of(startDate, LocalTime.of(8,0), ZoneId.of("America/New_York"));
         ZonedDateTime hoursEnd = ZonedDateTime.of(endDate, LocalTime.of(22, 0), ZoneId.of("America/New_York"));
         ZonedDateTime zonedDTstart = ZonedDateTime.of(startDT, userDAO.getTimeZone());
@@ -178,16 +192,10 @@ public class addAppointmentController {
 
         //Checks if inputted time and date complies with business hours.
         if(zonedDTstart.isAfter(zonedDTend) && zonedDTend.isBefore(hoursStart) && zonedDTstart.isBefore(hoursStart) && zonedDTstart.isBefore(hoursEnd) && zonedDTend.isBefore(hoursEnd)) {
-
-            System.out.println("Date / Time is out of range.");
-            String e = "Business hours are invalid, try again.";
-            ButtonType clickOkay = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
-            Alert invalidInput = new Alert(Alert.AlertType.WARNING, e, clickOkay);
-            invalidInput.showAndWait();
-            return;
+            return true;
 
         }
-        return;
+        return false;
     }
 
     public ObservableList<String> getAppointmentTimes(){

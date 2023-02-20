@@ -1,6 +1,7 @@
 package controller;
 
 import DAO.appointmentDAO;
+import DAO.customerDAO;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
+import model.Customer;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -37,12 +39,18 @@ public class appointmentsController implements Initializable {
     @FXML private TableColumn<?, ?> appointmentEnd;
     @FXML private TableColumn<?, ?> appointmentContact;
     @FXML private TableColumn<?, ?> appointmentCustomerID;
-
-
-
+    @FXML
+    TableView<Customer> customerTable;
+    @FXML private TableColumn<?, ?> customerName;
+    @FXML private TableColumn<?, ?> customerAddress;
+    @FXML private TableColumn<?, ?> customerID;
+    @FXML private TableColumn<?, ?> customerPhoneNumber;
+    @FXML private TableColumn<?, ?> customerState;
+    @FXML private TableColumn<?, ?> customerPostalCode;
 
     @Override
     public void initialize(URL location, ResourceBundle resources){
+        //set appointment table
         allButton.setSelected(true);
 
         ObservableList<Appointment> appointments = null;
@@ -65,7 +73,20 @@ public class appointmentsController implements Initializable {
         appointmentCustomerID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
         appointmentTable.setItems(appointments);
 
-
+        //set customer table
+        ObservableList<Customer> customers = null;
+        try{
+            customers = customerDAO.getAllCustomers();
+        } catch (SQLException e){
+            System.out.println("error");
+        }
+        //ID not loading in properly.
+        customerID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+        customerName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        customerAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        customerPhoneNumber.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+        customerPostalCode.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+        customerTable.setItems(customers);
 
     }
     public void addAppointmentButton(ActionEvent event) throws Exception{
@@ -123,4 +144,5 @@ public class appointmentsController implements Initializable {
         window.show();
 
     }
+
 }
