@@ -1,13 +1,35 @@
 package controller;
 
+import DAO.userDAO;
+import DAO.countryDAO;
+import helper.JDBC;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class addCustomerController {
+
+    @FXML TextField addCustomerID;
+    @FXML TextField addCustomerName;
+    @FXML TextField addCustomerAddress;
+    @FXML TextField addCustomerPhoneNumber;
+    @FXML TextField addCustomerZip;
+    @FXML ComboBox<String> addCustomerCountry;
+    @FXML ComboBox<String> addCustomerDivision;
+
+
+
     public void addCustomerCancelButton(ActionEvent event) throws Exception {
         Parent parent = FXMLLoader.load(getClass().getResource("/view/appointments.fxml"));
         Scene scene = new Scene(parent);
@@ -18,5 +40,56 @@ public class addCustomerController {
     }
 
     public void addCustomerSaveButton(ActionEvent actionEvent) throws Exception{
+        String id = addCustomerID.getText();
+        String name = addCustomerName.getText();
+        String address = addCustomerAddress.getText();
+        String phone = addCustomerPhoneNumber.getText();
+        String zip = addCustomerZip.getText();
+        String country = addCustomerCountry.getValue();
+        String division = addCustomerDivision.getValue();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        if ( id.isBlank() ||country.isBlank() || division.isBlank() || name.isBlank() || address.isBlank() || zip.isBlank() ||
+                phone.isBlank()){
+
+            //error message
+
+        }
+
+        String sql = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+
+        ps.setString(1, name);
+        ps.setString(2, address);
+        ps.setString(3, zip);
+        ps.setString(4, phone);
+        ps.setString(5, ZonedDateTime.now(ZoneOffset.UTC).format(formatter).toString());
+        ps.setString(6, userDAO.getCurrentUser().getUserName());
+        ps.setString(7, ZonedDateTime.now(ZoneOffset.UTC).format(formatter).toString());
+        ps.setString(8, userDAO.getCurrentUser().getUserName());
+        ps.setInt(9, division);
+
+        try{
+            ps.executeUpdate();
+            ps.close();
+        } catch(SQLException e){
+            e.printStackTrace();
+            ps.close();
+            ButtonType clickOkay = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
+            Alert invalidInput = new Alert(Alert.AlertType.WARNING, "Unable to add customer, try again.", clickOkay);
+            invalidInput.showAndWait();
+        }
+
+    }
+
+    public void initialize() throws SQLException {
+        try{
+            addCustomerCountry.setItems(countryDAO.getCountries());
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+
     }
 }

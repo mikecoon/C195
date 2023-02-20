@@ -6,6 +6,9 @@ public class Customer {
     private String address;
     private String phoneNumber;
     private String postalCode;
+    private String division;
+    private String divisionID;
+    private String country;
 
     public Customer(Integer id, String name, String address, String phoneNumber, String postalCode){
         this.id = id;
@@ -13,6 +16,9 @@ public class Customer {
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.postalCode = postalCode;
+        //this.division = division;
+        //this.divisionID = divisionID;
+        //this.country = country
 
     }
 
