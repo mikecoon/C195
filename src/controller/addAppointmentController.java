@@ -108,8 +108,8 @@ public class addAppointmentController {
                 PreparedStatement ps = JDBC.connection.prepareStatement(sql);
 
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                String start = zonedStartDT.format(formatter).toString();
-                String end = zonedEndDT.format(formatter).toString();
+                String start = zonedStartDT.format(formatter);
+                String end = zonedEndDT.format(formatter);
                 String randAppointmentID = String.valueOf((int) (Math.random() * 350));
 
                 ps.setString(1, randAppointmentID);
@@ -177,10 +177,10 @@ public class addAppointmentController {
                 ButtonType clickOkay = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
                 Alert invalidInput = new Alert(Alert.AlertType.WARNING, e, clickOkay);
                 invalidInput.showAndWait();
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
 
     }
 

@@ -81,7 +81,7 @@ public class appointmentsController implements Initializable {
             System.out.println("error");
         }
         //ID not loading in properly.
-        customerID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+        customerID.setCellValueFactory(new PropertyValueFactory<>("id"));
         customerName.setCellValueFactory(new PropertyValueFactory<>("name"));
         customerAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
         customerPhoneNumber.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
@@ -100,8 +100,24 @@ public class appointmentsController implements Initializable {
 
     }
     public void updateAppointmentButton(ActionEvent event) throws Exception{
-        Parent parent = FXMLLoader.load(getClass().getResource("/view/addAppointment.fxml"));
+
+        Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
+        if (selectedAppointment == null) {
+            ButtonType clickOkay = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
+            Alert invalidInput = new Alert(Alert.AlertType.WARNING, "You must select an appointment to edit it.", clickOkay);
+            invalidInput.showAndWait();
+            return;
+        }
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/updateAppointment.fxml"));
+        Parent parent = loader.load();
         Scene scene = new Scene(parent);
+
+        //populate updateAppoinment page with selectedAppointment values
+        updateAppointmentController UAcontroller = loader.getController();
+        UAcontroller.populateFields(selectedAppointment);
+
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
         window.setTitle("Update Appointments");
         window.setScene(scene);
