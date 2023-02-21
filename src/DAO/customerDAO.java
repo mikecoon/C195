@@ -43,4 +43,21 @@ public class customerDAO {
         ps.close();
         return divisionID;
     }
+
+    //check if theres another way to do this...
+    public static ObservableList<String> getDivisionByCountry(String country) throws SQLException {
+        ObservableList<String> divisions = FXCollections.observableArrayList();
+        String sql = "SELECT c.Country, c.Country_ID,  d.Division_ID, d.Division FROM countries as c RIGHT OUTER JOIN first_level_divisions AS d ON c.Country_ID = d.Country_ID WHERE c.Country = ?";
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+
+        ps.setString(1, country);
+        ResultSet rs = ps.executeQuery();
+
+        while(rs.next()){
+            divisions.add(rs.getString("Division"));
+        }
+        ps.close();
+        return divisions;
+
+    }
 }
