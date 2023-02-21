@@ -1,5 +1,6 @@
 package controller;
 
+import DAO.customerDAO;
 import DAO.userDAO;
 import DAO.countryDAO;
 import helper.JDBC;
@@ -39,7 +40,7 @@ public class addCustomerController {
         window.show();
     }
 
-    public void addCustomerSaveButton(ActionEvent actionEvent) throws Exception{
+    public void addCustomerSaveButton(ActionEvent event) throws Exception{
         String id = addCustomerID.getText();
         String name = addCustomerName.getText();
         String address = addCustomerAddress.getText();
@@ -67,12 +68,12 @@ public class addCustomerController {
         ps.setString(2, address);
         ps.setString(3, zip);
         ps.setString(4, phone);
-        ps.setString(5, ZonedDateTime.now(ZoneOffset.UTC).format(formatter).toString());
+        ps.setString(5, ZonedDateTime.now(ZoneOffset.UTC).format(formatter));
         ps.setString(6, userDAO.getCurrentUser().getUserName());
-        ps.setString(7, ZonedDateTime.now(ZoneOffset.UTC).format(formatter).toString());
+        ps.setString(7, ZonedDateTime.now(ZoneOffset.UTC).format(formatter));
         ps.setString(8, userDAO.getCurrentUser().getUserName());
         //implement division finder
-        ps.setInt(9, division);
+        ps.setInt(9, customerDAO.getDivisionID(division));
 
         try{
             ps.executeUpdate();
@@ -81,12 +82,20 @@ public class addCustomerController {
             e.printStackTrace();
             ps.close();
             ButtonType clickOkay = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
-            Alert invalidInput = new Alert(Alert.AlertType.WARNING, "Unable to add customer, try again.", clickOkay);
-            invalidInput.showAndWait();
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Unable to add customer, try again.", clickOkay);
+            alert.showAndWait();
 
         }
 
-        //add success message
+        ButtonType clickOkay = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Added Customer", clickOkay);
+        alert.showAndWait();
+        Parent parent = FXMLLoader.load(getClass().getResource("/view/appointments.fxml"));
+        Scene scene = new Scene(parent);
+        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        window.setTitle("Appointments");
+        window.setScene(scene);
+        window.show();
 
     }
 

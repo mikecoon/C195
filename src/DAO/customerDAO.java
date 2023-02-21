@@ -29,4 +29,18 @@ public class customerDAO {
 
 
     }
+    public static Integer getDivisionID(String division) throws SQLException {
+        String sql = "SELECT Division, Division_ID FROM first_level_divisions WHERE Division = ?";
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+
+        ps.setString(1, division);
+        ResultSet rs = ps.executeQuery();
+        Integer divisionID = 0;
+
+        while (rs.next()) {
+            divisionID = rs.getInt("Division_ID");
+        }
+        ps.close();
+        return divisionID;
+    }
 }
