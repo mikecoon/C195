@@ -42,13 +42,13 @@ public class appointmentDAO {
         return appointmentOL;
     }
     public static ObservableList<Appointment> getCustomerAppointments(LocalDate startDate, LocalDate endDate, Integer customerID) throws SQLException {
-        String sql = "SELECT * FROM appointments as a LEFT OUTER JOIN contacts as c ON a.Contact_ID = c.Contact_ID WHERE datediff(a.Start, ?) = 0 AND datediff(a.End, ?) = 0 AND Customer_ID = ?;";
+        String sql = "SELECT * FROM appointments as a LEFT OUTER JOIN contacts as c ON a.Contact_ID = c.Contact_ID WHERE datediff(a.Start, ?) = 0 AND Customer_ID = ?;";
         ObservableList<Appointment> appointments = FXCollections.observableArrayList();
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
 
         ps.setString(1, startDate.toString());
-        ps.setString(2, endDate.toString());
-        ps.setInt(3, customerID);
+        //ps.setString(2, endDate.toString());
+        ps.setInt(2, customerID);
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {

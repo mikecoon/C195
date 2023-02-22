@@ -167,8 +167,9 @@ public class addAppointmentController {
 
     public Boolean checkOverlap(LocalDateTime startDT, LocalDateTime endDT, LocalDate startDate, LocalDate endDate, Integer customerID) throws SQLException{
         ObservableList<Appointment> appointments = appointmentDAO.getCustomerAppointments(startDate,endDate,customerID);
-        System.out.println(appointments);
+        System.out.println(customerID);
         for (Appointment appointment : appointments){
+            System.out.println(appointment.getAppointmentID());
             LocalDateTime start = appointment.getStartDateTime().toLocalDateTime();
             LocalDateTime end = appointment.getEndDateTime().toLocalDateTime();
             if ((start.isBefore(startDT) & end.isAfter(endDT) || (start.isBefore(endDT) & start.isAfter(startDT)) || (end.isBefore(endDT) & end.isAfter(startDT)))){
@@ -178,9 +179,11 @@ public class addAppointmentController {
                 ButtonType clickOkay = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
                 Alert invalidInput = new Alert(Alert.AlertType.WARNING, e, clickOkay);
                 invalidInput.showAndWait();
+                System.out.println("True: COL");
                 return true;
             }
         }
+        System.out.println("False: COL");
         return false;
 
     }
