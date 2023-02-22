@@ -44,10 +44,27 @@ public class updateCustomerController {
         updateCustomerAddress.setText(selectedCustomer.getAddress());
         updateCustomerPhoneNumber.setText(selectedCustomer.getPhoneNumber());
         updateCustomerZip.setText(selectedCustomer.getPostalCode());
+
         updateCustomerCountry.setItems(countryDAO.getCountries());
-        updateCustomerCountry.getSelectionModel().select(selectedCustomer.getCountry());
-        updateCustomerDivision.setItems(customerDAO.getDivisionByCountry(selectedCustomer.getCountry()));
-        updateCustomerDivision.getSelectionModel().select(selectedCustomer.getDivision());
+        //not sure how to assign a country to a customer when its not in the DB, so ill
+        //updateCustomerCountry.getSelectionModel().select(selectedCustomer.getCountry());
+
+        updateCustomerCountry.valueProperty().addListener((obs, init, updated) -> {
+            if (updated != null){
+                try{
+                    updateCustomerDivision.setItems(customerDAO.getDivisionByCountry(updateCustomerCountry.getValue()));
+                }
+                catch (SQLException e){
+                    e.printStackTrace();
+                }
+            }else {
+                updateCustomerDivision.getItems().clear();
+            }
+        });
+
+
+        //updateCustomerDivision.setItems(customerDAO.getDivisionByCountry(selectedCustomer.getCountry()));
+        //updateCustomerDivision.getSelectionModel().select(selectedCustomer.getDivision());
 
     }
 }

@@ -195,12 +195,29 @@ public class appointmentsController implements Initializable {
 
     }
     public void updateCustomerButton(ActionEvent event) throws Exception{
-        Parent parent = FXMLLoader.load(getClass().getResource("/view/updateCustomer.fxml"));
+
+        Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
+        if (selectedCustomer == null) {
+            ButtonType clickOkay = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
+            Alert invalidInput = new Alert(Alert.AlertType.WARNING, "You must select a customer to edit it.", clickOkay);
+            invalidInput.showAndWait();
+            return;
+        }
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/updateCustomer.fxml"));
+        Parent parent = loader.load();
         Scene scene = new Scene(parent);
+
+        //populate updateAppoinment page with selectedAppointment values
+        updateCustomerController UCcontroller = loader.getController();
+        UCcontroller.populateFields(selectedCustomer);
+
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
         window.setTitle("Update Customer");
         window.setScene(scene);
         window.show();
+
 
     }
 

@@ -186,16 +186,38 @@ public class addAppointmentController {
     }
 
     public Boolean checkDate(LocalDateTime startDT, LocalDateTime endDT, LocalDate startDate, LocalDate endDate ){
+        //get the hours of start and end of appt time
         ZonedDateTime hoursStart = ZonedDateTime.of(startDate, LocalTime.of(8,0), ZoneId.of("America/New_York"));
         ZonedDateTime hoursEnd = ZonedDateTime.of(endDate, LocalTime.of(22, 0), ZoneId.of("America/New_York"));
         ZonedDateTime zonedDTstart = ZonedDateTime.of(startDT, userDAO.getTimeZone());
         ZonedDateTime zonedDTend = ZonedDateTime.of(endDT, userDAO.getTimeZone());
 
-        //Checks if inputted time and date complies with business hours.
-        if(zonedDTstart.isAfter(zonedDTend) && zonedDTend.isBefore(hoursStart) && zonedDTstart.isBefore(hoursStart) && zonedDTstart.isBefore(hoursEnd) && zonedDTend.isBefore(hoursEnd)) {
-            return true;
+        DayOfWeek startDay = startDate.getDayOfWeek();
+        DayOfWeek endDay = endDate.getDayOfWeek();
+        int startDayInt = startDay.getValue();
+        int endDayInt = endDay.getValue();
+        int weekBegin = DayOfWeek.MONDAY.getValue();
+        int weekEnd = DayOfWeek.FRIDAY.getValue();
 
+
+        //validate correct date
+        if(startDayInt < weekBegin || startDayInt > weekEnd || endDayInt < weekBegin || endDayInt > weekEnd){
+            return true;
         }
+        //validate time within business hours
+        if(zonedDTstart.isBefore(hoursStart) | zonedDTstart.isAfter(hoursEnd) | zonedDTend.isBefore(hoursStart)
+                | zonedDTend.isAfter(hoursEnd) | zonedDTstart.isAfter(hoursEnd)){
+            return true;
+        }
+        //validate start before end
+        if(startDT.isAfter(endDT)){
+            return true;
+        }
+        //validate start not equal to end
+        if(startDT.isEqual(endDT)){
+            return true;
+        }
+
         return false;
     }
 

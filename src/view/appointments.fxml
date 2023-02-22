@@ -42,16 +42,18 @@
             <TableColumn fx:id="customerID" prefWidth="75.0" text="ID" />
             <TableColumn fx:id="customerName" prefWidth="75.0" text="Name" />
             <TableColumn fx:id="customerAddress" prefWidth="98.00001525878906" text="Address" />
-            <TableColumn fx:id="customerPhoneNumber" prefWidth="108.0" text="Phone Number" />
-            <TableColumn fx:id="customerPostalCode" prefWidth="99.0" text="Postal Code" />
+            <TableColumn fx:id="customerPhoneNumber" prefWidth="92.0" text="Phone Number" />
+            <TableColumn fx:id="customerPostalCode" prefWidth="84.0" text="Postal Code" />
+            <TableColumn fx:id="customerCountry" prefWidth="70.0" text="Country" />
+            <TableColumn fx:id="customerDivision" text="Division" />
          </columns>
       </TableView>
-      <Button fx:id="addAppointmentButton" layoutX="47.0" layoutY="225.0" onAction="#addAppointmentButton" mnemonicParsing="false" text="Add" />
-      <Button fx:id="updateAppointmentButton" layoutX="105.0" layoutY="225.0" onAction="#updateAppointmentButton" mnemonicParsing="false" text="Update" />
-      <Button fx:id="deleteAppointmentButton" layoutX="181.0" layoutY="225.0" onAction="#deleteAppointmentButton" mnemonicParsing="false" text="Delete" />
-      <Button fx:id="addCustomerButton" layoutX="47.0" layoutY="455.0" onAction="#addCustomerButton" mnemonicParsing="false" text="Add" />
-      <Button fx:id="updateCustomerButton" layoutX="105.0" layoutY="455.0" onAction="#updateCustomerButton" mnemonicParsing="false" text="Update" />
-      <Button fx:id="deleteCustomerButton" layoutX="181.0" layoutY="455.0" onAction="#deleteCustomerButton" mnemonicParsing="false" text="Delete" />
+      <Button fx:id="addAppointmentButton" layoutX="47.0" layoutY="225.0" mnemonicParsing="false" onAction="#addAppointmentButton" text="Add" />
+      <Button fx:id="updateAppointmentButton" layoutX="105.0" layoutY="225.0" mnemonicParsing="false" onAction="#updateAppointmentButton" text="Update" />
+      <Button fx:id="deleteAppointmentButton" layoutX="181.0" layoutY="225.0" mnemonicParsing="false" onAction="#deleteAppointmentButton" text="Delete" />
+      <Button fx:id="addCustomerButton" layoutX="47.0" layoutY="455.0" mnemonicParsing="false" onAction="#addCustomerButton" text="Add" />
+      <Button fx:id="updateCustomerButton" layoutX="105.0" layoutY="455.0" mnemonicParsing="false" onAction="#updateCustomerButton" text="Update" />
+      <Button fx:id="deleteCustomerButton" layoutX="181.0" layoutY="455.0" mnemonicParsing="false" onAction="#deleteCustomerButton" text="Delete" />
       <Line endX="800.5" endY="6.0" layoutX="14.0" layoutY="256.0" startX="-100.0" />
       <Button fx:id="reportsButton" layoutX="685.0" layoutY="312.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="100.0" text="Reports" />
       <Button fx:id="logoutButton" layoutX="685.0" layoutY="374.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="100.0" text="Logout" />
