@@ -22,7 +22,7 @@ public class customerDAO {
             String customerPhone = rs.getString("Phone");
             String customerPostalCode = rs.getString("Postal_Code");
 
-            Customer customer = new Customer(customerID,customerName,customerAddress,customerPhone,customerPostalCode);
+            Customer customer = new Customer(customerID,customerName,customerAddress,customerPhone,customerPostalCode,null,null);
             customers.add(customer);
         }
         return customers;

@@ -100,11 +100,25 @@ public class addCustomerController {
     }
 
     public void initialize() throws SQLException {
+        //I need to add a listener so when the country is selected the divsion box auto populates
+        //could turn listener to separate function..
         try{
             addCustomerCountry.setItems(countryDAO.getCountries());
         }catch(SQLException e){
             e.printStackTrace();
         }
+        addCustomerCountry.valueProperty().addListener((obs, init, updated) -> {
+            if (updated != null){
+                try{
+                    addCustomerDivision.setItems(customerDAO.getDivisionByCountry(addCustomerCountry.getValue()));
+                }
+                catch (SQLException e){
+                    e.printStackTrace();
+                }
+            }else {
+                addCustomerDivision.getItems().clear();
+            }
+        });
 
 
     }

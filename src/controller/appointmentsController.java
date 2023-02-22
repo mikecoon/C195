@@ -2,6 +2,7 @@ package controller;
 
 import DAO.appointmentDAO;
 import DAO.customerDAO;
+import helper.JDBC;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,6 +18,7 @@ import model.Appointment;
 import model.Customer;
 
 import java.net.URL;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -140,6 +142,47 @@ public class appointmentsController implements Initializable {
         } catch (Exception e){
             System.out.println(e);
         }
+    }
+
+    public void deleteCustomerButton(ActionEvent event) throws Exception{
+        ObservableList<Appointment> appointments = appointmentDAO.getAllAppointments();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this customer and all associated appointments? ");
+        Optional<ButtonType> confirm = alert.showAndWait();
+        if (confirm.isPresent() && confirm.get()== ButtonType.OK){
+            int customerID = customerTable.getSelectionModel().getSelectedItem().getId();
+            appointmentDAO.deleteAppointment(customerID);
+
+            String sql = "DELETE FROM customers WHERE Customer_ID = ?";
+            PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+
+            String sql2 = "DELETE FROM appointments WHERE Appointment_ID = ?";
+            PreparedStatement ps2 = JDBC.connection.prepareStatement(sql2);
+
+            int selectedCustomer = customerTable.getSelectionModel().getSelectedItem().getId();
+
+            for(Appointment appointment: appointments){
+                int customerAppt = appointment.getCustomerID();
+                if(selectedCustomer == customerAppt){
+                    ps2.setInt(1,appointment.getAppointmentID());
+                    ps2.execute();
+                }
+            }
+            ps.setInt(1, selectedCustomer);
+            ps.execute();
+            ObservableList<Customer> newCustomers = customerDAO.getAllCustomers();
+            customerTable.setItems(newCustomers);
+
+            //Added this code to reload the page after a customer is deleted
+            //solved error with having to reload for associated appointments to show deleted
+            Parent parent = FXMLLoader.load(getClass().getResource("/view/appointments.fxml"));
+            Scene scene = new Scene(parent);
+            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            window.setTitle("Appointments");
+            window.setScene(scene);
+            window.show();
+
+        }
+
     }
 
     public void addCustomerButton(ActionEvent event) throws Exception{
