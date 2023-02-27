@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class customerDAO {
     public static ObservableList<Customer> getAllCustomers() throws SQLException {
         ObservableList<Customer> customers = FXCollections.observableArrayList();
-        String sql = "SELECT customers.Customer_ID, customers.Customer_Name, customers.Address, customers.Postal_Code, customers.Phone, customers.Division_ID, first_level_divisions.Division from customers INNER JOIN  first_level_divisions ON customers.Division_ID = first_level_divisions.Division_ID";
+        String sql = "SELECT customers.Customer_ID, customers.Customer_Name, customers.Address, customers.Postal_Code, customers.Phone, customers.Division_ID, first_level_divisions.Division, first_level_divisions.Country_ID, countries.Country from customers INNER JOIN  first_level_divisions ON customers.Division_ID = first_level_divisions.Division_ID INNER JOIN countries ON first_level_divisions.Country_ID = countries.Country_ID";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         while (rs.next()){
@@ -21,8 +21,11 @@ public class customerDAO {
             String customerAddress = rs.getString("Address");
             String customerPhone = rs.getString("Phone");
             String customerPostalCode = rs.getString("Postal_Code");
+            String divisionID = rs.getString("Division_ID");
+            String division = rs.getString("Division");
+            String country = rs.getString("Country");
 
-            Customer customer = new Customer(customerID,customerName,customerAddress,customerPhone,customerPostalCode,null,null);
+            Customer customer = new Customer(customerID,customerName,customerAddress,customerPhone,customerPostalCode,division,divisionID,country);
             customers.add(customer);
         }
         return customers;

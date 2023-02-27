@@ -47,8 +47,9 @@ public class appointmentsController implements Initializable {
     @FXML private TableColumn<?, ?> customerAddress;
     @FXML private TableColumn<?, ?> customerID;
     @FXML private TableColumn<?, ?> customerPhoneNumber;
-    @FXML private TableColumn<?, ?> customerState;
+    @FXML private TableColumn<?,?> customerDivision;
     @FXML private TableColumn<?, ?> customerPostalCode;
+    @FXML private TableColumn<?,?> customerDivisionID;
 
     @Override
     public void initialize(URL location, ResourceBundle resources){
@@ -88,6 +89,8 @@ public class appointmentsController implements Initializable {
         customerAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
         customerPhoneNumber.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
         customerPostalCode.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+        customerDivision.setCellValueFactory(new PropertyValueFactory<>("division"));
+        customerDivisionID.setCellValueFactory(new PropertyValueFactory<>("divisionID"));
         customerTable.setItems(customers);
 
     }

@@ -44,7 +44,7 @@
             <TableColumn fx:id="customerAddress" prefWidth="98.00001525878906" text="Address" />
             <TableColumn fx:id="customerPhoneNumber" prefWidth="92.0" text="Phone Number" />
             <TableColumn fx:id="customerPostalCode" prefWidth="84.0" text="Postal Code" />
-            <TableColumn fx:id="customerCountry" prefWidth="70.0" text="Country" />
+            <TableColumn fx:id="customerDivisionID" prefWidth="70.0" text="Division ID" />
             <TableColumn fx:id="customerDivision" text="Division" />
          </columns>
       </TableView>

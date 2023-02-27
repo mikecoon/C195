@@ -1,17 +1,17 @@
 package controller;
 
-import DAO.countryDAO;
-import DAO.customerDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Customer;
-
-import javafx.scene.control.*;
+import DAO.*;
 
 import java.sql.SQLException;
 
@@ -44,7 +44,12 @@ public class updateCustomerController {
         updateCustomerAddress.setText(selectedCustomer.getAddress());
         updateCustomerPhoneNumber.setText(selectedCustomer.getPhoneNumber());
         updateCustomerZip.setText(selectedCustomer.getPostalCode());
+        updateCustomerCountry.setItems(countryDAO.getCountries());
+        updateCustomerCountry.getSelectionModel().select(selectedCustomer.getCountry());
 
+
+
+        /*
         updateCustomerCountry.setItems(countryDAO.getCountries());
         //not sure how to assign a country to a customer when its not in the DB, so ill
         //updateCustomerCountry.getSelectionModel().select(selectedCustomer.getCountry());
@@ -65,6 +70,6 @@ public class updateCustomerController {
 
         //updateCustomerDivision.setItems(customerDAO.getDivisionByCountry(selectedCustomer.getCountry()));
         //updateCustomerDivision.getSelectionModel().select(selectedCustomer.getDivision());
-
+        */
     }
 }
