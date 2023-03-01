@@ -49,7 +49,7 @@ public class addCustomerController {
         String country = addCustomerCountry.getValue();
         String division = addCustomerDivision.getValue();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter dtformat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         if ( id.isBlank() ||country.isBlank() || division.isBlank() || name.isBlank() || address.isBlank() || zip.isBlank() ||
                 phone.isBlank()){
@@ -68,9 +68,9 @@ public class addCustomerController {
         ps.setString(2, address);
         ps.setString(3, zip);
         ps.setString(4, phone);
-        ps.setString(5, ZonedDateTime.now(ZoneOffset.UTC).format(formatter));
+        ps.setString(5, ZonedDateTime.now(ZoneOffset.UTC).format(dtformat));
         ps.setString(6, userDAO.getCurrentUser().getUserName());
-        ps.setString(7, ZonedDateTime.now(ZoneOffset.UTC).format(formatter));
+        ps.setString(7, ZonedDateTime.now(ZoneOffset.UTC).format(dtformat));
         ps.setString(8, userDAO.getCurrentUser().getUserName());
         //implement division finder
         ps.setInt(9, customerDAO.getDivisionID(division));

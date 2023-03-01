@@ -21,9 +21,9 @@
             <Font size="15.0" />
          </font>
       </Text>
-      <RadioButton fx:id="weekButton" layoutX="400.0" layoutY="27.0" mnemonicParsing="false" text="Current Week" />
-      <RadioButton fx:id="monthButton" layoutX="519.0" layoutY="27.0" mnemonicParsing="false" text="Current Month" />
-      <RadioButton fx:id="allButton" layoutX="644.0" layoutY="27.0" mnemonicParsing="false" text="All Appointments" />
+      <RadioButton fx:id="weekButton" layoutX="400.0" layoutY="27.0"  onAction="#weekButtonView" mnemonicParsing="false" text="Current Week" />
+      <RadioButton fx:id="monthButton" layoutX="519.0" layoutY="27.0" onAction="#monthButtonView" mnemonicParsing="false" text="Current Month" />
+      <RadioButton fx:id="allButton" layoutX="644.0" layoutY="27.0" onAction="#allButtonView" mnemonicParsing="false" text="All Appointments" />
       <TableView fx:id="appointmentTable" layoutX="32.0" layoutY="60.0" prefHeight="159.0" prefWidth="752.0">
         <columns>
           <TableColumn fx:id="appointmentID" prefWidth="46.0" text="ID" />

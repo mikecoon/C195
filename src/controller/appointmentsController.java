@@ -2,7 +2,9 @@ package controller;
 
 import DAO.appointmentDAO;
 import DAO.customerDAO;
+import DAO.userDAO;
 import helper.JDBC;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,7 +21,12 @@ import model.Customer;
 
 import java.net.URL;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -55,6 +62,11 @@ public class appointmentsController implements Initializable {
     public void initialize(URL location, ResourceBundle resources){
         //set appointment table
         allButton.setSelected(true);
+        ToggleGroup toggle = new ToggleGroup();
+        weekButton.setToggleGroup(toggle);
+        monthButton.setToggleGroup(toggle);
+        allButton.setToggleGroup(toggle);
+
 
         ObservableList<Appointment> appointments = null;
         try{
@@ -221,6 +233,136 @@ public class appointmentsController implements Initializable {
         window.setScene(scene);
         window.show();
 
+
+    }
+
+    public void allButtonView(ActionEvent event) throws SQLException{
+        ObservableList<Appointment> appointments = appointmentDAO.getAllAppointments();
+
+        appointmentID.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+        appointmentTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        appointmentType.setCellValueFactory(new PropertyValueFactory<>("type"));
+        appointmentDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        appointmentLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
+        appointmentStart.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
+        appointmentEnd.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
+        appointmentContact.setCellValueFactory(new PropertyValueFactory<>("contactID"));
+        appointmentCustomerID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+        appointmentTable.setItems(appointments);
+
+    }
+
+    public void weekButtonView(ActionEvent event) throws SQLException{
+        System.out.println("weekButtonview Called");
+        ZonedDateTime start = ZonedDateTime.now(userDAO.getTimeZone()).withZoneSameInstant(ZoneOffset.UTC);
+        ZonedDateTime end = start.plusWeeks(1).withZoneSameInstant(ZoneOffset.UTC);
+        ObservableList<Appointment> appointments = FXCollections.observableArrayList();
+
+        String sql = "SELECT * FROM appointments as a LEFT OUTER JOIN contacts as c ON a.Contact_ID = c.Contact_ID WHERE Start between ? AND ?";
+
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+        DateTimeFormatter dtformat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        String start_ = start.format(dtformat);
+        String end_ = end.format(dtformat);
+        ps.setString(1, start_);
+        //ps.setString(2, endDate.toString());
+        ps.setString(2, end_);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            int appointmentID = rs.getInt("Appointment_ID");
+            String title = rs.getString("Title");
+            String type = rs.getString("Type");
+            String description = rs.getString("Description");
+            String location = rs.getString("Location");
+            Timestamp startDateTime = rs.getTimestamp("Start");
+            Timestamp endDateTime = rs.getTimestamp("End");
+            int contactID = rs.getInt("Contact_ID");
+            int _customerID = rs.getInt("Customer_ID");
+            int userID = rs.getInt("User_ID");
+            Timestamp createDate = rs.getTimestamp("Create_Date");
+            Timestamp lastUpdateDateTime = rs.getTimestamp("Last_Update");
+            String lastUpdatedBy = rs.getString("Last_Updated_By");
+
+            Appointment appointment = new Appointment(appointmentID, title, type, description, location, startDateTime, endDateTime, contactID,
+                    _customerID, userID, createDate, lastUpdateDateTime, lastUpdatedBy);
+
+            appointments.add(appointment);
+
+        }
+        System.out.println(appointments);
+        ps.close();
+
+        appointmentID.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+        appointmentTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        appointmentType.setCellValueFactory(new PropertyValueFactory<>("type"));
+        appointmentDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        appointmentLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
+        appointmentStart.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
+        appointmentEnd.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
+        appointmentContact.setCellValueFactory(new PropertyValueFactory<>("contactID"));
+        appointmentCustomerID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+        appointmentTable.setItems(appointments);
+
+        //DateTimeFormatter dtformat = DateTimeFormatter.ofPattern("yyyy-MM-dd H:MM");
+
+    }
+
+    public void monthButtonView(ActionEvent event) throws SQLException {
+        System.out.println("monthViewButton Called");
+        ZonedDateTime start = ZonedDateTime.now(userDAO.getTimeZone()).withZoneSameInstant(ZoneOffset.UTC);
+        ZonedDateTime end = start.plusMonths(1).withZoneSameInstant(ZoneOffset.UTC);
+        ObservableList<Appointment> appointments = FXCollections.observableArrayList();
+
+        String sql = "SELECT * FROM appointments as a LEFT OUTER JOIN contacts as c ON a.Contact_ID = c.Contact_ID WHERE Start between ? AND ?";
+
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+        DateTimeFormatter dtformat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        String start_ = start.format(dtformat);
+        String end_ = end.format(dtformat);
+        ps.setString(1, start_);
+        //ps.setString(2, endDate.toString());
+        ps.setString(2, end_);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            int appointmentID = rs.getInt("Appointment_ID");
+            String title = rs.getString("Title");
+            String type = rs.getString("Type");
+            String description = rs.getString("Description");
+            String location = rs.getString("Location");
+            Timestamp startDateTime = rs.getTimestamp("Start");
+            Timestamp endDateTime = rs.getTimestamp("End");
+            int contactID = rs.getInt("Contact_ID");
+            int _customerID = rs.getInt("Customer_ID");
+            int userID = rs.getInt("User_ID");
+            Timestamp createDate = rs.getTimestamp("Create_Date");
+            Timestamp lastUpdateDateTime = rs.getTimestamp("Last_Update");
+            String lastUpdatedBy = rs.getString("Last_Updated_By");
+
+            Appointment appointment = new Appointment(appointmentID, title, type, description, location, startDateTime, endDateTime, contactID,
+                    _customerID, userID, createDate, lastUpdateDateTime, lastUpdatedBy);
+
+            appointments.add(appointment);
+
+        }
+        System.out.println(appointments);
+        ps.close();
+
+        appointmentID.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+        appointmentTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        appointmentType.setCellValueFactory(new PropertyValueFactory<>("type"));
+        appointmentDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        appointmentLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
+        appointmentStart.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
+        appointmentEnd.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
+        appointmentContact.setCellValueFactory(new PropertyValueFactory<>("contactID"));
+        appointmentCustomerID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+        appointmentTable.setItems(appointments);
+
+        //DateTimeFormatter dtformat = DateTimeFormatter.ofPattern("yyyy-MM-dd H:MM");
 
     }
 
