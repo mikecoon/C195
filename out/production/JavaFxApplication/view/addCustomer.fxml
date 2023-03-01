@@ -20,7 +20,7 @@
       <Label layoutX="58.0" layoutY="240.0" text="Phone Number" />
       <Label layoutX="56.0" layoutY="324.0" text="Zip Code" />
       <Label layoutX="58.0" layoutY="281.0" text="Country" />
-      <TextField fx:id="addCustomerID" layoutX="200.0" layoutY="123.0" />
+      <TextField fx:id="addCustomerID" disable="true" layoutX="200.0" layoutY="123.0" />
       <TextField fx:id="addCustomerName" layoutX="200.0" layoutY="159.0" />
       <TextField fx:id="addCustomerAddress" layoutX="200.0" layoutY="198.0" />
       <TextField fx:id="addCustomerPhoneNumber" layoutX="200.0" layoutY="238.0" />

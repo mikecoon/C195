@@ -24,8 +24,7 @@ import java.time.format.DateTimeFormatter;
 
 public class updateAppointmentController {
 
-    @FXML
-    TextField updateAppointmentID; //might not need
+    @FXML TextField updateAppointmentID; //might not need
     @FXML TextField updateAppointmentTitle;
     @FXML TextField updateAppointmentType;
     @FXML TextField updateAppointmentDescription;
@@ -222,7 +221,17 @@ public class updateAppointmentController {
         for (Appointment appointment : appointments){
             LocalDateTime start = appointment.getStartDateTime().toLocalDateTime();
             LocalDateTime end = appointment.getEndDateTime().toLocalDateTime();
-            if ((start.isBefore(startDT) & end.isAfter(endDT)) || (start.isBefore(endDT) & start.isAfter(startDT)) || (end.isBefore(endDT) & end.isAfter(startDT))){
+
+            if(start.isEqual(startDT) & end.isEqual(endDT)){
+                System.out.println("Duplicate appointment, error.");
+                String e = "An appointment already exists at this time for this customer, try again.";
+                ButtonType clickOkay = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
+                Alert invalidInput = new Alert(Alert.AlertType.WARNING, e, clickOkay);
+                invalidInput.showAndWait();
+                return true;
+            }
+
+            else if ((start.isBefore(startDT) & end.isAfter(endDT)) || (start.isBefore(endDT) & start.isAfter(startDT)) || (end.isBefore(endDT) & end.isAfter(startDT))){
 
                 System.out.println("Customer overlap, error.");
                 String e = "There is an overlap in customer appointments, try again.";

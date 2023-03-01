@@ -21,7 +21,7 @@
         <Label layoutX="58.0" layoutY="363.0" text="Zip Code" />
         <Label layoutX="58.0" layoutY="281.0" text="Country" />
         <Label layoutX="58.0" layoutY="318.0" text="Division" />
-        <TextField fx:id="updateCustomerID" layoutX="200.0" layoutY="123.0" />
+        <TextField fx:id="updateCustomerID" disable="true" layoutX="200.0" layoutY="123.0" />
         <TextField fx:id="updateCustomerName" layoutX="200.0" layoutY="159.0" />
         <TextField fx:id="updateCustomerAddress" layoutX="200.0" layoutY="198.0" />
         <TextField fx:id="updateCustomerPhoneNumber" layoutX="200.0" layoutY="238.0" />

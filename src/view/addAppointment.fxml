@@ -27,7 +27,7 @@
       <Label layoutX="51.0" layoutY="399.0" text="Customer ID" />
       <Label layoutX="51.0" layoutY="432.0" text="User ID" />
       <Label layoutX="51.0" layoutY="475.0" text="Contact" />
-      <TextField fx:id="addAppointmentID" layoutX="173.0" layoutY="100.0" prefHeight="25.0" prefWidth="174.0" />
+      <TextField fx:id="addAppointmentID" disable="true" layoutX="173.0" layoutY="100.0" prefHeight="25.0" prefWidth="174.0" />
       <TextField fx:id="addAppointmentTitle" layoutX="173.0" layoutY="129.0" prefHeight="25.0" prefWidth="174.0" />
       <TextField fx:id="addAppointmentType" layoutX="173.0" layoutY="157.0" prefHeight="25.0" prefWidth="174.0" />
       <TextField fx:id="addAppointmentDescription" layoutX="173.0" layoutY="186.0" prefHeight="25.0" prefWidth="174.0" />
