@@ -1,5 +1,7 @@
 package controller;
 
+import DAO.appointmentDAO;
+import DAO.contactDAO;
 import helper.JDBC;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,10 +37,8 @@ public class reportsController implements Initializable {
     @FXML TableColumn<?,?> contactTitle;
     @FXML TableColumn<?,?> contactType;
     @FXML TableColumn<?,?> contactDescription;
-    @FXML TableColumn<?,?> contactStartDate;
-    @FXML TableColumn<?,?> contactStartTime;
-    @FXML TableColumn<?,?> contactEndDate;
-    @FXML TableColumn<?,?> contactEndTime;
+    @FXML TableColumn<?,?> contactStart;
+    @FXML TableColumn<?,?> contactEnd;
     @FXML TableColumn<?,?> contactCustomerID;
     @FXML TableColumn<?,?> typeType;
     @FXML TableColumn<?,?> typeTotal;
@@ -121,9 +121,35 @@ public class reportsController implements Initializable {
         }
     }
 
+    @FXML
     public void setContactTable() throws SQLException{
-        int contactid = 0;
+        System.out.println("setContact called");
+        Integer id = 0;
         String selectedContact = contactDropDown.getSelectionModel().getSelectedItem();
+        ObservableList<String> allContacts = contactDAO.getContactNames();
+
+        for(String contact: allContacts){
+            //System.out.println(contact);
+            //System.out.println(selectedContact);
+            if(contact.equals(selectedContact)){
+                id = contactDAO.getIDbyName(selectedContact);
+                //System.out.println(id);
+            }
+        }
+
+        ObservableList<Appointment> appointments = appointmentDAO.getAllAppointments();
+        ObservableList<Appointment> populateTable = FXCollections.observableArrayList();
+
+        for(Appointment appointment: appointments){
+            //System.out.println(id);
+            //System.out.println(appointment.getContactID());
+            if(id == appointment.getContactID()){
+                //System.out.println("were equal");
+                populateTable.add(appointment);
+            }
+        }
+        contactTable.setItems(populateTable);
+
 
     }
 
@@ -145,11 +171,23 @@ public class reportsController implements Initializable {
         monthTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
         typeType.setCellValueFactory(new PropertyValueFactory<>("name"));
         typeTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
+        contactApptID.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+        contactTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        contactType.setCellValueFactory(new PropertyValueFactory<>("type"));
+        contactDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        contactStart.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
+        contactEnd.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
+        contactCustomerID.setCellValueFactory(new PropertyValueFactory<>("total"));
+
 
         try {
+
+            ObservableList<String> contacts = contactDAO.getContactNames();
+            contactDropDown.setItems(contacts);
             setCountryTable();
             setMonthTable();
             setTypeTable();
+            setContactTable();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

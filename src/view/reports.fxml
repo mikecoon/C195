@@ -24,11 +24,9 @@
           <TableColumn fx:id="contactTitle" prefWidth="60.33332824707031" text="Title" />
             <TableColumn fx:id="contactType" prefWidth="64.66665649414062" text="Type" />
             <TableColumn fx:id="contactDescription" prefWidth="97.33331298828125" text="Description" />
-            <TableColumn fx:id="contactStartDate" prefWidth="70.0" text="Start Date" />
-            <TableColumn fx:id="contactStartTime" prefWidth="82.66665649414062" text="Start Time" />
-            <TableColumn fx:id="contactEndDate" prefWidth="69.6666259765625" text="End Date" />
-            <TableColumn fx:id="contactEndTime" prefWidth="81.0" text="End Time" />
-            <TableColumn fx:id="contactCustomerID" prefWidth="112.0" text="Customer ID" />
+            <TableColumn fx:id="contactStart" prefWidth="163.33334350585938" text="Start Date / Time" />
+            <TableColumn fx:id="contactEnd" prefWidth="146.66665649414062" text="End Date / Time" />
+            <TableColumn fx:id="contactCustomerID" prefWidth="96.99996948242188" text="Customer ID" />
         </columns>
       </TableView>
       <Text layoutX="58.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Customer Appointments By Type" />
@@ -52,6 +50,6 @@
          </columns>
       </TableView>
       <Text layoutX="559.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Customer Appointments By Country" />
-      <Button fx:id="backButton" layoutX="663.0" layoutY="43.0" onAction="#backButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Back" />
+      <Button fx:id="backButton" layoutX="663.0" layoutY="43.0" mnemonicParsing="false" onAction="#backButton" prefHeight="25.0" prefWidth="72.0" text="Back" />
    </children>
 </AnchorPane>
