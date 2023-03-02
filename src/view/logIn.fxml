@@ -10,7 +10,7 @@
     <children>
         <TextField fx:id="loginUsername" layoutX="218.0" layoutY="167.0" />
         <TextField fx:id="loginPassword" layoutX="218.0" layoutY="215.0" />
-        <Label fx:id="loginLabel" alignment="TOP_CENTER" layoutX="182.0" layoutY="44.0" prefWidth="236.0" text="Login" textAlignment="CENTER">
+        <Label fx:id="loginLabel" alignment="TOP_CENTER" layoutX="94.0" layoutY="47.0" prefHeight="88.0" prefWidth="402.0" text="Login" textAlignment="CENTER">
             <font>
                 <Font size="60.0" />
             </font>
@@ -18,8 +18,8 @@
         <Button fx:id="loginLoginButton" layoutX="223.0" layoutY="262.0" mnemonicParsing="false" onAction="#loginButton" prefHeight="31.0" prefWidth="72.0" text="Login" />
         <Button fx:id="loginExitButton" layoutX="303.0" layoutY="262.0" mnemonicParsing="false" onAction="#exitProgram" prefHeight="31.0" prefWidth="72.0" text="Exit" />
         <TextField fx:id="loginLocation" layoutX="218.0" layoutY="315.0" />
-        <Label fx:id="loginLocationLabel" layoutX="143.0" layoutY="319.0" text="Location" />
-      <Label fx:id="loginUsernameLabel" layoutX="141.0" layoutY="171.0" text="Username" />
-      <Label fx:id="loginPasswordLabel" layoutX="141.0" layoutY="219.0" text="Password" />
+        <Label fx:id="loginLocationLabel" layoutX="118.0" layoutY="319.0" text="Location" />
+      <Label fx:id="loginUsernameLabel" layoutX="114.0" layoutY="171.0" text="Username" />
+      <Label fx:id="loginPasswordLabel" layoutX="116.0" layoutY="219.0" text="Password" />
     </children>
 </AnchorPane>
