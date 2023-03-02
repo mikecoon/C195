@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 
+/** Handles updating preexisting appointments in the database*/
 public class updateAppointmentController {
 
     @FXML TextField updateAppointmentID; //might not need
@@ -42,6 +43,13 @@ public class updateAppointmentController {
     Button updateAppointmentSaveButton;
     @FXML Button updateAppointmentCancelButton;
 
+    /**
+     * Saves updated appointments and updates in the database
+     * validates that all inputs are valid, alerts user of errors
+     * @param event
+     * @throws SQLException
+     * @throws IOException
+     */
     public void updateAppointmentSaveButton(ActionEvent event) throws SQLException, IOException {
         try {
 
@@ -170,6 +178,11 @@ public class updateAppointmentController {
 
     }
 
+    /**
+     * cancels an appointment update, redirects back to appointmentView
+     * @param event
+     * @throws Exception
+     */
     public void updateAppointmentCancelButton(ActionEvent event) throws Exception {
         Parent parent = FXMLLoader.load(getClass().getResource("/view/appointments.fxml"));
         Scene scene = new Scene(parent);
@@ -179,6 +192,13 @@ public class updateAppointmentController {
         window.show();
     }
 
+    /**
+     * Method checks the date to make sure it is between business hours.
+     * @param startDT start date time
+     * @param endDT end date tine
+     * @param startDate start date of appt
+     * @param endDate end date of appt
+     */
     public Boolean checkDateTime(LocalDateTime startDT, LocalDateTime endDT, LocalDate startDate, LocalDate endDate ){
         //get the hours of start and end of appt time
         ZonedDateTime hoursStart = ZonedDateTime.of(startDate, LocalTime.of(8,0), ZoneId.of("America/New_York"));
@@ -215,6 +235,15 @@ public class updateAppointmentController {
         return true;
     }
 
+    /**
+     * Method checks to make sure new appointment doesnt overlap with a preexisting appointment.
+     * @param startDT start date time
+     * @param endDT end date time
+     * @param startDate start date of appt
+     * @param endDate end date of appt
+     * @param customerID is the customers ID
+     * @throws SQLException
+     */
     public Boolean checkOverlap(LocalDateTime startDT, LocalDateTime endDT, LocalDate startDate, LocalDate endDate, Integer customerID) throws SQLException{
         ObservableList<Appointment> appointments = appointmentDAO.getCustomerAppointments(startDate,endDate,customerID);
 
@@ -245,6 +274,10 @@ public class updateAppointmentController {
 
     }
 
+    /**
+     * Populates needed fields on the updateAppointmentPage upon initialization
+     * @param selectedAppointment
+     */
     public void populateFields(Appointment selectedAppointment){
         try{
             try{
@@ -295,6 +328,9 @@ public class updateAppointmentController {
         }
 }
 
+    /**
+     * Method gets all of the appt times for initialization and population
+     */
     public ObservableList<String> getAppointmentTimes(){
         ObservableList<String> apptTimes = FXCollections.observableArrayList();
         LocalTime startAppointment = LocalTime.MIN.plusHours(8);

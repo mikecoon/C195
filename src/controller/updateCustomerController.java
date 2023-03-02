@@ -18,6 +18,7 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
+/** Logic for updating a customer within the database*/
 public class updateCustomerController {
     @FXML TextField updateCustomerID;
     @FXML TextField updateCustomerName;
@@ -29,10 +30,11 @@ public class updateCustomerController {
     @FXML Button updateCustomerSaveButton;
     @FXML Button updateCustomerCancelButton;
 
-    public void initialize(){
-        //implement this
-    }
-
+    /**
+     * cancels a customer update, redirects back to appointmentView
+     * @param event
+     * @throws Exception
+     */
     public void updateCustomerCancelButton(ActionEvent event) throws Exception {
         Parent parent = FXMLLoader.load(getClass().getResource("/view/appointments.fxml"));
         Scene scene = new Scene(parent);
@@ -42,6 +44,12 @@ public class updateCustomerController {
         window.show();
     }
 
+    /**
+     * Method saves the new customer to database
+     * Lets you know if input is invalid
+     * @throws Exception
+     * @param event
+     */
     public void updateCustomerSaveButton(ActionEvent event) throws Exception{
         String id = updateCustomerID.getText();
         String name = updateCustomerName.getText();
@@ -99,6 +107,11 @@ public class updateCustomerController {
         window.show();
 
     }
+
+    /**
+     * Initializes the addCustomer view by populating necessary combo boxes
+     * @throws SQLException
+     */
     public void populateFields(Customer selectedCustomer) throws SQLException {
         updateCustomerID.setText(selectedCustomer.getId().toString());
         updateCustomerName.setText(selectedCustomer.getName());
