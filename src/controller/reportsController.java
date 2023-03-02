@@ -133,7 +133,7 @@ public class reportsController implements Initializable {
             //System.out.println(selectedContact);
             if(contact.equals(selectedContact)){
                 id = contactDAO.getIDbyName(selectedContact);
-                //System.out.println(id);
+                System.out.println(id);
             }
         }
 
@@ -144,7 +144,7 @@ public class reportsController implements Initializable {
             //System.out.println(id);
             //System.out.println(appointment.getContactID());
             if(id == appointment.getContactID()){
-                //System.out.println("were equal");
+                System.out.println("were equal");
                 populateTable.add(appointment);
             }
         }
@@ -171,6 +171,7 @@ public class reportsController implements Initializable {
         monthTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
         typeType.setCellValueFactory(new PropertyValueFactory<>("name"));
         typeTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
+
         contactApptID.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
         contactTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         contactType.setCellValueFactory(new PropertyValueFactory<>("type"));

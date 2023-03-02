@@ -285,7 +285,7 @@ public class updateAppointmentController {
             updateAppointmentCustomerID.getSelectionModel().select(selectedAppointment.getCustomerID());
 
             updateAppointmentContact.setItems(contactDAO.getContactNames());
-            updateAppointmentContact.getSelectionModel().select(selectedAppointment.getContactID());
+            updateAppointmentContact.getSelectionModel().select(selectedAppointment.getContactName());
 
             updateAppointmentUserID.setItems(userDAO.getUserIDs());
             updateAppointmentUserID.getSelectionModel().select(selectedAppointment.getUserID());

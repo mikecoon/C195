@@ -34,6 +34,18 @@ public class contactDAO {
         return id;
     }
 
+    public static String givenIDgetName(Integer contactID) throws SQLException{
+        String sql = "SELECT * FROM contacts WHERE Contact_ID = ?";
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+        ps.setInt(1, contactID);
+        String name = null;
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            name = rs.getString("Contact_Name");
+        }
+        return name;
+    }
+
     public static ObservableList<String> getContactNames() throws SQLException {
         ObservableList<String> contactNames = FXCollections.observableArrayList();
         String sql = "SELECT * from contacts";

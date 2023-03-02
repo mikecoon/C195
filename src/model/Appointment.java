@@ -1,5 +1,8 @@
 package model;
 
+import DAO.contactDAO;
+
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 public class Appointment {
@@ -11,6 +14,7 @@ public class Appointment {
     private Timestamp startDateTime;
     private Timestamp endDateTime;
     private Integer contactID;
+    private String contactName;
     private Integer customerID;
     private Integer userID;
     private Timestamp createDate;
@@ -34,6 +38,11 @@ public class Appointment {
         createDate = createDate_;
         lastUpdateDateTime = lastUpdateDateTime_;
         lastUpdateBy = lastUpdateBy_;
+        try{
+            contactName = contactDAO.givenIDgetName(contactID);
+        }catch (SQLException e){
+            System.out.println(e);
+        }
 
     }
     //Appointment class getters
@@ -61,6 +70,9 @@ public class Appointment {
     }
     public Integer getContactID() {
         return contactID;
+    }
+    public String getContactName() {
+        return contactName;
     }
     public Integer getCustomerID() {
         return customerID;

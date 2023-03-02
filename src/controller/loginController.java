@@ -14,9 +14,11 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Appointment;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -49,6 +51,10 @@ public class loginController implements Initializable {
     }
 
     public void loginButton(ActionEvent event) throws Exception, IOException, SQLException {
+
+        FileWriter writeToFile = new FileWriter("login_activity.txt",true);
+        //PrintWriter printToFile = new PrintWriter(writeToFile);
+
         String userName = loginUsername.getText();
         String password = loginPassword.getText();
 
@@ -60,7 +66,10 @@ public class loginController implements Initializable {
 
         if (login) {
 
-            //log user login w/ timestamp
+            //successful login
+            writeToFile.write(userName + " was able to successfully log in at " + Timestamp.valueOf(LocalDateTime.now()) + "\n");
+            writeToFile.close();
+
             Parent parent = FXMLLoader.load(getClass().getResource("/view/appointments.fxml"));
             Scene scene = new Scene(parent);
             Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -88,6 +97,13 @@ public class loginController implements Initializable {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "There are no upcoming appointments!");
                 Optional<ButtonType> confirm = alert.showAndWait();
             }
+        } else {
+            //unsuccessful login
+            writeToFile.write(userName + " was unsuccessful in loggin in at " + Timestamp.valueOf(LocalDateTime.now()) + "\n");
+            writeToFile.close();
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Incorrect Username or Password, try again.");
+            Optional<ButtonType> confirm = alert.showAndWait();
         }
 
     }
