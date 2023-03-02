@@ -10,11 +10,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.ZoneId;
 
+/** Accesses the databse to perform queries and actions related to users*/
 public class userDAO {
     private static ZoneId timeZone;
     private static User currentUser;
 
-    //Attempts to login based on given username and password.
+    /**
+     * Attempts to login based on given username and password.
+     * @param password password
+     * @param userName user name
+     * @throws SQLException
+     */
     public static boolean AttemptLogin(String userName, String password) throws SQLException {
         String sql = "SELECT * FROM users WHERE " + "User_Name = ? AND Password = ?";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
@@ -36,14 +42,24 @@ public class userDAO {
         }
 
     }
+
+    /**
+     * Gets the users time zone
+     */
     public static ZoneId getTimeZone(){
         return timeZone;
     }
+
+    /**
+     * Gets the current user
+     */
     public static User getCurrentUser(){
         return currentUser;
     }
 
-
+    /**
+     * Returns an observable list of all userIDs from the database
+     */
     public static ObservableList<Integer> getUserIDs() throws SQLException{
         ObservableList<Integer> userIDs = FXCollections.observableArrayList();
         String sql = "SELECT DISTINCT User_ID FROM users;";

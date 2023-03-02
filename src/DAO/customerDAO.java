@@ -9,7 +9,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/** Accesses the databse to perform queries and actions related to customers*/
 public class customerDAO {
+
+    /**
+     * returns an observable list of all customers from databse
+     * @throws SQLException
+     */
     public static ObservableList<Customer> getAllCustomers() throws SQLException {
         ObservableList<Customer> customers = FXCollections.observableArrayList();
         String sql = "SELECT customers.Customer_ID, customers.Customer_Name, customers.Address, customers.Postal_Code, customers.Phone, customers.Division_ID, first_level_divisions.Division, first_level_divisions.Country_ID, countries.Country from customers INNER JOIN  first_level_divisions ON customers.Division_ID = first_level_divisions.Division_ID INNER JOIN countries ON first_level_divisions.Country_ID = countries.Country_ID";
@@ -32,6 +38,12 @@ public class customerDAO {
 
 
     }
+
+    /**
+     * Retrieves a divisionID given a division from database
+     * @param division division
+     * @throws SQLException
+     */
     public static Integer getDivisionID(String division) throws SQLException {
         String sql = "SELECT Division, Division_ID FROM first_level_divisions WHERE Division = ?";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
@@ -47,7 +59,11 @@ public class customerDAO {
         return divisionID;
     }
 
-    //check if theres another way to do this...
+    /**
+     * Retrieves an observable list of all divisions given a country from databse
+     * @param country country
+     * @throws SQLException
+     */
     public static ObservableList<String> getDivisionByCountry(String country) throws SQLException {
         ObservableList<String> divisions = FXCollections.observableArrayList();
         String sql = "SELECT c.Country, c.Country_ID,  d.Division_ID, d.Division FROM countries as c RIGHT OUTER JOIN first_level_divisions AS d ON c.Country_ID = d.Country_ID WHERE c.Country = ?";

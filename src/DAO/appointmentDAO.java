@@ -10,8 +10,13 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 
+/** Accesses the databse to perform queries and actions related to appointments*/
 public class appointmentDAO {
 
+    /**
+     * Retrieves an observable list of all appointments from databse
+     * @throws SQLException
+     */
     public static ObservableList<Appointment> getAllAppointments() throws SQLException{
 
         ObservableList<Appointment> appointmentOL = FXCollections.observableArrayList();
@@ -44,6 +49,14 @@ public class appointmentDAO {
         ps.close();
         return appointmentOL;
     }
+
+    /**
+     * Retrieves an observable list of all of a customers appointments from databse
+     * @param startDate start date of appt
+     * @param endDate end date of appt
+     * @param customerID customers ID
+     * @throws SQLException
+     */
     public static ObservableList<Appointment> getCustomerAppointments(LocalDate startDate, LocalDate endDate, Integer customerID) throws SQLException {
         String sql = "SELECT * FROM appointments as a LEFT OUTER JOIN contacts as c ON a.Contact_ID = c.Contact_ID WHERE datediff(a.Start, ?) = 0 AND Customer_ID = ?";
         ObservableList<Appointment> appointments = FXCollections.observableArrayList();
@@ -79,7 +92,11 @@ public class appointmentDAO {
         return appointments;
     }
 
-
+    /**
+     * Deletes an appointment from the database
+     * @param appointmentID appointmentID
+     * @throws SQLException
+     */
     public static void deleteAppointment(Integer appointmentID) throws SQLException{
         String sql = "DELETE FROM appointments WHERE Appointment_ID=?";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
@@ -89,6 +106,10 @@ public class appointmentDAO {
 
     }
 
+    /**
+     * Gets all customerIDs from the database
+     * @throws SQLException
+     */
     public static ObservableList<Integer> getCustomerIDs() throws SQLException{
         ObservableList<Integer> customerIDS = FXCollections.observableArrayList();
         String sql = "SELECT DISTINCT Customer_ID FROM customers;";
@@ -101,9 +122,6 @@ public class appointmentDAO {
         return customerIDS;
     }
 
-    //public static ObservableList<Appointment> getUpcomingAppointments() throws SQLException{
-
-    //}
 
 }
 
