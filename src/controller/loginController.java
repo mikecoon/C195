@@ -20,6 +20,8 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -30,7 +32,7 @@ public class loginController implements Initializable {
     @FXML private Label loginLabel;
     @FXML private Label loginUsernameLabel;
     @FXML private Label loginPasswordLabel;
-    @FXML private TextField loginLocationLabel;
+    @FXML private Label loginLocationLabel;
     @FXML private TextField loginLocation;
     @FXML private Button loginLoginButton;
     @FXML private Button loginExitButton;
@@ -40,11 +42,20 @@ public class loginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        /*Locale local = Locale.getDefault();
+        Locale local = Locale.getDefault();
         Locale.setDefault(local);
         ZoneId zoneId = ZoneId.systemDefault();
+        resourceBundle = ResourceBundle.getBundle("languages/lang");
+
+        loginLabel.setText(resourceBundle.getString("loginLabel"));
+        loginUsernameLabel.setText(resourceBundle.getString("loginUsernameLabel"));
+        loginPasswordLabel.setText(resourceBundle.getString("loginPasswordLabel"));
+        loginLoginButton.setText(resourceBundle.getString("loginLoginButton"));
+        loginExitButton.setText(resourceBundle.getString("loginExitButton"));
+        loginLocationLabel.setText(resourceBundle.getString("loginLocationLabel"));
+
         loginLocation.setText(String.valueOf(zoneId));
-         */
+
 
         System.out.println("Log In initialized!");
 
@@ -101,8 +112,8 @@ public class loginController implements Initializable {
             //unsuccessful login
             writeToFile.write(userName + " was unsuccessful in loggin in at " + Timestamp.valueOf(LocalDateTime.now()) + "\n");
             writeToFile.close();
-
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Incorrect Username or Password, try again.");
+            ResourceBundle resourceBundle = ResourceBundle.getBundle("languages/lang");
+            Alert alert = new Alert(Alert.AlertType.WARNING, resourceBundle.getString("loginError"));
             Optional<ButtonType> confirm = alert.showAndWait();
         }
 
