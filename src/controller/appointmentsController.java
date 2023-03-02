@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import model.Appointment;
 import model.Customer;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -364,6 +365,15 @@ public class appointmentsController implements Initializable {
 
         //DateTimeFormatter dtformat = DateTimeFormatter.ofPattern("yyyy-MM-dd H:MM");
 
+    }
+
+    public void reportButton(ActionEvent event) throws IOException {
+        Parent parent = FXMLLoader.load(getClass().getResource("/view/reports.fxml"));
+        Scene scene = new Scene(parent);
+        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        window.setTitle("Reports");
+        window.setScene(scene);
+        window.show();
     }
 
 }

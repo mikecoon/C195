@@ -55,7 +55,7 @@
       <Button fx:id="updateCustomerButton" layoutX="105.0" layoutY="455.0" mnemonicParsing="false" onAction="#updateCustomerButton" text="Update" />
       <Button fx:id="deleteCustomerButton" layoutX="181.0" layoutY="455.0" mnemonicParsing="false" onAction="#deleteCustomerButton" text="Delete" />
       <Line endX="800.5" endY="6.0" layoutX="14.0" layoutY="256.0" startX="-100.0" />
-      <Button fx:id="reportsButton" layoutX="685.0" layoutY="312.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="100.0" text="Reports" />
+      <Button fx:id="reportsButton" layoutX="685.0" layoutY="312.0" onAction="#reportButton" mnemonicParsing="false" prefHeight="38.0" prefWidth="100.0" text="Reports" />
       <Button fx:id="logoutButton" layoutX="685.0" layoutY="374.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="100.0" text="Logout" />
       <Line endX="12.29290771484375" endY="1.0" layoutX="644.0" layoutY="500.0" startX="12.29290771484375" startY="-237.29290771484375" />
    </children>

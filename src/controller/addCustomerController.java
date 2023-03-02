@@ -51,7 +51,7 @@ public class addCustomerController {
 
         DateTimeFormatter dtformat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        if ( id.isBlank() ||country.isBlank() || division.isBlank() || name.isBlank() || address.isBlank() || zip.isBlank() ||
+        if ( country.isBlank() || division.isBlank() || name.isBlank() || address.isBlank() || zip.isBlank() ||
                 phone.isBlank()){
 
             ButtonType clickOkay = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);

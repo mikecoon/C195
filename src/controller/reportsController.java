@@ -1,12 +1,32 @@
 package controller;
 
+import helper.JDBC;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import model.Appointment;
+import model.Report;
 
-public class reportsController {
+import java.io.IOException;
+import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
+
+public class reportsController implements Initializable {
     @FXML TableView<Appointment> contactTable;
     @FXML TableView typeTable;
     @FXML TableView monthTable;
@@ -26,7 +46,113 @@ public class reportsController {
     @FXML TableColumn<?,?> monthTotal;
     @FXML TableColumn<?,?> countryCountry;
     @FXML TableColumn<?,?> countryTotal;
-    @FXML ComboBox contactDropDown;
+    @FXML ComboBox<String> contactDropDown;
+    @FXML Button backButton;
 
-    public void
+    public void setCountryTable() throws SQLException {
+        try {
+            System.out.println("setCountry called");
+            ObservableList<Report> countries = FXCollections.observableArrayList();
+
+            String sql = "select countries.Country, count(*) as total from customers inner join first_level_divisions on customers.Division_ID = first_level_divisions.Division_ID inner join countries on countries.Country_ID = first_level_divisions.Country_ID where  customers.Division_ID = first_level_divisions.Division_ID group by first_level_divisions.Country_ID order by count(*) desc";
+            PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String name = rs.getString("Country");
+                int total = rs.getInt("total");
+                Report reportCountry = new Report(name, total);
+                countries.add(reportCountry);
+                //System.out.println(reportCountry);
+
+            }
+
+            countryTable.setItems(countries);
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+    }
+
+    public void setMonthTable() throws SQLException {
+        try {
+            System.out.println("setMonth called");
+            ObservableList<Report> months = FXCollections.observableArrayList();
+
+            String sql = "SELECT MONTHNAME(Start) as \"month\", COUNT(MONTH(Start)) as \"total\" from appointments GROUP BY Month";
+            PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String name = rs.getString("month");
+                int total = rs.getInt("total");
+                Report reportMonth = new Report(name, total);
+                months.add(reportMonth);
+                //System.out.println(reportCountry);
+
+            }
+
+            monthTable.setItems(months);
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+    }
+
+    public void setTypeTable() throws SQLException{
+        try {
+            System.out.println("setType called");
+            ObservableList<Report> types = FXCollections.observableArrayList();
+
+            String sql = "SELECT Type, COUNT(Type) as \"total\" FROM appointments GROUP BY Type";
+            PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String name = rs.getString("Type");
+                int total = rs.getInt("total");
+                Report reportType = new Report(name, total);
+                types.add(reportType);
+                //System.out.println(reportCountry);
+
+            }
+
+            typeTable.setItems(types);
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+    }
+
+    public void setContactTable() throws SQLException{
+        int contactid = 0;
+        String selectedContact = contactDropDown.getSelectionModel().getSelectedItem();
+
+    }
+
+
+    public void backButton(ActionEvent event) throws IOException{
+        Parent parent = FXMLLoader.load(getClass().getResource("/view/appointments.fxml"));
+        Scene scene = new Scene(parent);
+        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        window.setTitle("Appointments");
+        window.setScene(scene);
+        window.show();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources){
+        countryCountry.setCellValueFactory(new PropertyValueFactory<>("name"));
+        countryTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
+        monthMonth.setCellValueFactory(new PropertyValueFactory<>("name"));
+        monthTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
+        typeType.setCellValueFactory(new PropertyValueFactory<>("name"));
+        typeTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
+
+        try {
+            setCountryTable();
+            setMonthTable();
+            setTypeTable();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+    }
 }
