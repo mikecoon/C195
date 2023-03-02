@@ -31,6 +31,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/** Class to display appointments and customers as well as allow for adding, updating, deleting, and viewing records.*/
 public class appointmentsController implements Initializable {
     @FXML
     RadioButton monthButton;
@@ -59,6 +60,12 @@ public class appointmentsController implements Initializable {
     @FXML private TableColumn<?, ?> customerPostalCode;
     @FXML private TableColumn<?,?> customerDivisionID;
 
+    /**
+     * Initializes appointment and customer tables
+     * lambda function populates the appointment tables without requiring a for loop to iterate over all appointments.
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources){
         //set appointment table
@@ -68,15 +75,20 @@ public class appointmentsController implements Initializable {
         monthButton.setToggleGroup(toggle);
         allButton.setToggleGroup(toggle);
 
+        ObservableList<Appointment> allAppts = FXCollections.observableArrayList();
 
-        ObservableList<Appointment> appointments = null;
         try{
-            appointments = appointmentDAO.getAllAppointments();
+            //lambda function
+            ObservableList<Appointment> appointments = appointmentDAO.getAllAppointments();
+
+
+            appointments.forEach(appointment -> allAppts.add(appointment));
+            //appointments = appointmentDAO.getAllAppointments();
             //System.out.println(appointments);
         }
         catch (SQLException e){
             System.out.println("error");
-            //come back to this and add logic incase of connection error
+
         }
         appointmentID.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
         appointmentTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -87,7 +99,7 @@ public class appointmentsController implements Initializable {
         appointmentEnd.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
         appointmentContact.setCellValueFactory(new PropertyValueFactory<>("contactID"));
         appointmentCustomerID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
-        appointmentTable.setItems(appointments);
+        appointmentTable.setItems(allAppts);
 
         //set customer table
         ObservableList<Customer> customers = null;
@@ -107,6 +119,11 @@ public class appointmentsController implements Initializable {
         customerTable.setItems(customers);
 
     }
+    /**
+     * redirects to the addAppointmentView
+     * @param event
+     * @throws Exception
+     */
     public void addAppointmentButton(ActionEvent event) throws Exception{
         Parent parent = FXMLLoader.load(getClass().getResource("/view/addAppointment.fxml"));
         Scene scene = new Scene(parent);
@@ -117,6 +134,13 @@ public class appointmentsController implements Initializable {
 
 
     }
+
+    /**
+     * redirects to the updateAppointmentView
+     * lets user know if they didnt select an appointment
+     * @param event
+     * @throws Exception
+     */
     public void updateAppointmentButton(ActionEvent event) throws Exception{
 
         Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
@@ -143,6 +167,13 @@ public class appointmentsController implements Initializable {
 
 
     }
+
+    /**
+     * deletes selected appointment from database
+     * lets user know if no appointment is selected
+     * @param event
+     * @throws Exception
+     */
     public void deleteAppointmentButton(ActionEvent event) throws Exception{
         try{
             String appointmentType = appointmentTable.getSelectionModel().getSelectedItem().getType();
@@ -160,6 +191,12 @@ public class appointmentsController implements Initializable {
         }
     }
 
+    /**
+     * deletes selected customer from database
+     * lets user know if no customer is selected
+     * @param event
+     * @throws Exception
+     */
     public void deleteCustomerButton(ActionEvent event) throws Exception{
         ObservableList<Appointment> appointments = appointmentDAO.getAllAppointments();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this customer and all associated appointments? ");
@@ -201,6 +238,11 @@ public class appointmentsController implements Initializable {
 
     }
 
+    /**
+     * redirects to addCustomerView
+     * @param event
+     * @throws Exception
+     */
     public void addCustomerButton(ActionEvent event) throws Exception{
         Parent parent = FXMLLoader.load(getClass().getResource("/view/addCustomer.fxml"));
         Scene scene = new Scene(parent);
@@ -210,6 +252,13 @@ public class appointmentsController implements Initializable {
         window.show();
 
     }
+
+    /**
+     * redirects to updateCustomerView
+     * lets user know if no customer is selected
+     * @param event
+     * @throws Exception
+     */
     public void updateCustomerButton(ActionEvent event) throws Exception{
 
         Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
@@ -237,6 +286,11 @@ public class appointmentsController implements Initializable {
 
     }
 
+    /**
+     * displays all appointments in the appointment table
+     * @param event
+     * @throws SQLException
+     */
     public void allButtonView(ActionEvent event) throws SQLException{
         ObservableList<Appointment> appointments = appointmentDAO.getAllAppointments();
 
@@ -253,6 +307,11 @@ public class appointmentsController implements Initializable {
 
     }
 
+    /**
+     * displays all appointments within the current week in the appointment table
+     * @param event
+     * @throws SQLException
+     */
     public void weekButtonView(ActionEvent event) throws SQLException{
         System.out.println("weekButtonview Called");
         ZonedDateTime start = ZonedDateTime.now(userDAO.getTimeZone()).withZoneSameInstant(ZoneOffset.UTC);
@@ -310,6 +369,11 @@ public class appointmentsController implements Initializable {
 
     }
 
+    /**
+     * displays all appointments within the current month in the appointment table
+     * @param event
+     * @throws SQLException
+     */
     public void monthButtonView(ActionEvent event) throws SQLException {
         System.out.println("monthViewButton Called");
         ZonedDateTime start = ZonedDateTime.now(userDAO.getTimeZone()).withZoneSameInstant(ZoneOffset.UTC);
@@ -367,6 +431,11 @@ public class appointmentsController implements Initializable {
 
     }
 
+    /**
+     * redirects to the reportsView
+     * @param event
+     * @throws IOException
+     */
     public void reportButton(ActionEvent event) throws IOException {
         Parent parent = FXMLLoader.load(getClass().getResource("/view/reports.fxml"));
         Scene scene = new Scene(parent);

@@ -18,7 +18,7 @@ import java.sql.SQLException;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-
+/** Class with methods to add a new customer to the database*/
 public class addCustomerController {
 
     @FXML TextField addCustomerID;
@@ -29,8 +29,12 @@ public class addCustomerController {
     @FXML ComboBox<String> addCustomerCountry;
     @FXML ComboBox<String> addCustomerDivision;
 
-
-
+    /**
+     * Method cancel out of adding a customer
+     * This method takes you back to the home screen.
+     * @throws Exception
+     * @param event
+     */
     public void addCustomerCancelButton(ActionEvent event) throws Exception {
         Parent parent = FXMLLoader.load(getClass().getResource("/view/appointments.fxml"));
         Scene scene = new Scene(parent);
@@ -40,6 +44,12 @@ public class addCustomerController {
         window.show();
     }
 
+    /**
+     * Method saves the new customer to database
+     * Lets you know if input is invalid
+     * @throws Exception
+     * @param event
+     */
     public void addCustomerSaveButton(ActionEvent event) throws Exception{
         String id = addCustomerID.getText();
         String name = addCustomerName.getText();
@@ -99,6 +109,10 @@ public class addCustomerController {
 
     }
 
+    /**
+     * Initializes the addCustomer view by populating necessary combo boxes
+     * @throws SQLException
+     */
     public void initialize() throws SQLException {
         //I need to add a listener so when the country is selected the divsion box auto populates
         //could turn listener to separate function..

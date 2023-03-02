@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 
+/** Class to add an appointment to the database*/
 public class addAppointmentController {
     @FXML TextField addAppointmentID; //might not need
     @FXML TextField addAppointmentTitle;
@@ -38,15 +39,34 @@ public class addAppointmentController {
     @FXML Button addAppointmentSaveButton;
     @FXML Button addAppointmentCancelButton;
 
+    /**
+     * Initializes the addControllerViews combo boxes
+     * lambda function to populate the customerID combobox without having to have a for loop to go over all the customerIDs
+     * @throws SQLException
+     */
     public void initialize() throws SQLException {
         addAppointmentContact.setItems(contactDAO.getContactNames());
         addAppointmentStartTime.setItems(getAppointmentTimes());
         addAppointmentEndTime.setItems(getAppointmentTimes());
         addAppointmentUserID.setItems(userDAO.getUserIDs());
-        addAppointmentCustomerID.setItems(appointmentDAO.getCustomerIDs());
+
+        ObservableList<Integer> customerIDList = appointmentDAO.getCustomerIDs();
+        ObservableList<Integer> allCustomers = FXCollections.observableArrayList();
+
+        //lambda function
+        customerIDList.forEach(customerID -> allCustomers.add(customerID));
+
+        addAppointmentCustomerID.setItems(customerIDList);
 
     }
 
+    /**
+     * Saves the appointment to the database
+     * validates user input and alerts if any errors
+     * @throws SQLException
+     * @throws IOException
+     * @param event
+     */
     public void addAppointmentSaveButton(ActionEvent event) throws IOException, SQLException {
         try{
             //field variables
@@ -58,14 +78,7 @@ public class addAppointmentController {
             Integer userID = addAppointmentUserID.getValue();
             String contactName = addAppointmentContact.getValue();
 
-            //Time/Date variables
-            //String startDate = addAppointmentStartDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            //String endDate = addAppointmentEndDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-            //String startTime = addAppointmentStartTime.getValue();
-            //String endTime = addAppointmentEndTime.getValue();
-            //LocalDate localStartDate = addAppointmentStartDate.getValue();
-            //LocalDate localEndDate = addAppointmentEndDate.getValue();
             System.out.println("Got here1");
             //input validation
             if(!addAppointmentTitle.getText().isBlank() && !addAppointmentType.getText().isBlank() && !addAppointmentDescription.getText().isBlank() &&
@@ -156,6 +169,11 @@ public class addAppointmentController {
         }
     }
 
+    /**
+     * Method cancels new appointment creation and takes user back to appointmentView
+     * @param event
+     * @throws Exception
+     */
     public void addAppointmentCancelButton(ActionEvent event) throws Exception {
         Parent parent = FXMLLoader.load(getClass().getResource("/view/appointments.fxml"));
         Scene scene = new Scene(parent);
@@ -165,6 +183,15 @@ public class addAppointmentController {
         window.show();
     }
 
+    /**
+     * Method checks to make sure new appointment doesnt overlap with a preexisting appointment.
+     * @param startDT start date time
+     * @param endDT end date time
+     * @param startDate start date of appt
+     * @param endDate end date of appt
+     * @param customerID is the customers ID
+     * @throws SQLException
+     */
     public Boolean checkOverlap(LocalDateTime startDT, LocalDateTime endDT, LocalDate startDate, LocalDate endDate, Integer customerID) throws SQLException{
         ObservableList<Appointment> appointments = appointmentDAO.getCustomerAppointments(startDate,endDate,customerID);
         System.out.println(customerID);
@@ -199,6 +226,13 @@ public class addAppointmentController {
 
     }
 
+    /**
+     * Method checks the date to make sure it is between business hours.
+     * @param startDT start date time
+     * @param endDT end date tine
+     * @param startDate start date of appt
+     * @param endDate end date of appt
+     */
     public Boolean checkDate(LocalDateTime startDT, LocalDateTime endDT, LocalDate startDate, LocalDate endDate ){
         //get the hours of start and end of appt time
         ZonedDateTime hoursStart = ZonedDateTime.of(startDate, LocalTime.of(8,0), ZoneId.of("America/New_York"));
@@ -235,6 +269,9 @@ public class addAppointmentController {
         return false;
     }
 
+    /**
+     * Method gets all of the appt times for initialization and population
+     */
     public ObservableList<String> getAppointmentTimes(){
         ObservableList<String> apptTimes = FXCollections.observableArrayList();
         LocalTime startAppointment = LocalTime.MIN.plusHours(8);

@@ -28,6 +28,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/** Handles generating various reports for appointments, customers, contacts, etc.*/
 public class reportsController implements Initializable {
     @FXML TableView<Appointment> contactTable;
     @FXML TableView typeTable;
@@ -49,6 +50,10 @@ public class reportsController implements Initializable {
     @FXML ComboBox<String> contactDropDown;
     @FXML Button backButton;
 
+    /**
+     * Populates the country table with total appointments for each country
+     * @throws SQLException
+     */
     public void setCountryTable() throws SQLException {
         try {
             System.out.println("setCountry called");
@@ -73,6 +78,10 @@ public class reportsController implements Initializable {
         }
     }
 
+    /**
+     * Populates the month table with total appointments for each month
+     * @throws SQLException
+     */
     public void setMonthTable() throws SQLException {
         try {
             System.out.println("setMonth called");
@@ -97,6 +106,10 @@ public class reportsController implements Initializable {
         }
     }
 
+    /**
+     * Populates the type table with total appointments for each type
+     * @throws SQLException
+     */
     public void setTypeTable() throws SQLException{
         try {
             System.out.println("setType called");
@@ -121,6 +134,10 @@ public class reportsController implements Initializable {
         }
     }
 
+    /**
+     * Populates the contact table with data regarding a contacts appointments
+     * @throws SQLException
+     */
     @FXML
     public void setContactTable() throws SQLException{
         System.out.println("setContact called");
@@ -153,7 +170,10 @@ public class reportsController implements Initializable {
 
     }
 
-
+    /**
+     * exits reports page, redirects back to appointments page
+     * @throws IOException
+     */
     public void backButton(ActionEvent event) throws IOException{
         Parent parent = FXMLLoader.load(getClass().getResource("/view/appointments.fxml"));
         Scene scene = new Scene(parent);
@@ -163,6 +183,11 @@ public class reportsController implements Initializable {
         window.show();
     }
 
+    /**
+     * Initializes reports tables by calling local methods to do so
+     * @param resources
+     * @param location
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources){
         countryCountry.setCellValueFactory(new PropertyValueFactory<>("name"));

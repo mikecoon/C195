@@ -25,7 +25,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-
+/** Class for logging a user in, logging all log in attempts, and changing language based on user location / language settings*/
 public class loginController implements Initializable {
     @FXML private TextField loginUsername;
     @FXML private TextField loginPassword;
@@ -39,7 +39,11 @@ public class loginController implements Initializable {
 
 
 
-
+    /**
+     * Initializes log in page, changes text and notifications based on users location/language settings
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Locale local = Locale.getDefault();
@@ -61,6 +65,14 @@ public class loginController implements Initializable {
 
     }
 
+    /**
+     * Initializes log in page, changes text and notifications based on users location/language settings
+     * Validates username and password, writes all log in attempt data to text file
+     * @param event
+     * @throws Exception
+     * @throws IOException
+     * @throws SQLException
+     */
     public void loginButton(ActionEvent event) throws Exception, IOException, SQLException {
 
         FileWriter writeToFile = new FileWriter("login_activity.txt",true);
@@ -119,6 +131,10 @@ public class loginController implements Initializable {
 
     }
 
+    /**
+     * exits the applications
+     * @param event
+     */
     public void exitProgram(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
