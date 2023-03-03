@@ -103,7 +103,7 @@ public class updateAppointmentController {
                 Boolean validateDT = checkDateTime(startDT,endDT,startDate,endDate);
                 if(!validateDT){
                     System.out.println("Input error.");
-                    String e = "Error with dates or times entered. Make sure appointment is within business days and hours of operation. Make sure start and end time arent the same and that start time is before end time.";
+                    String e = "Error with dates or times entered. Make sure appointment is within business days and hours of operation. Make sure start and end time arent the same and that start time is before end time. Make sure the start and end dates are the same.";
                     ButtonType clickOkay = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
                     Alert invalidInput = new Alert(Alert.AlertType.WARNING, e, clickOkay);
                     invalidInput.showAndWait();
@@ -229,6 +229,9 @@ public class updateAppointmentController {
         }
         //validate start not equal to end
         if(startDT.isEqual(endDT)){
+            return false;
+        }
+        if(startDayInt != endDayInt){
             return false;
         }
 

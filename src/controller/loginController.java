@@ -122,7 +122,7 @@ public class loginController implements Initializable {
             }
         } else {
             //unsuccessful login
-            writeToFile.write(userName + " was unsuccessful in loggin in at " + Timestamp.valueOf(LocalDateTime.now()) + "\n");
+            writeToFile.write(userName + " was unsuccessful in log in in at " + Timestamp.valueOf(LocalDateTime.now()) + "\n");
             writeToFile.close();
             ResourceBundle resourceBundle = ResourceBundle.getBundle("languages/lang");
             Alert alert = new Alert(Alert.AlertType.WARNING, resourceBundle.getString("loginError"));

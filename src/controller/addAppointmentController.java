@@ -97,7 +97,7 @@ public class addAppointmentController {
 
                 if(checkDate(startDT,endDT,startDate,endDate)){
                     System.out.println("Date / Time is out of range.");
-                    String e = "Business hours are invalid, try again.";
+                    String e = "Error with dates or times entered. Make sure appointment is within business days and hours of operation. Make sure start and end time arent the same and that start time is before end time. Make sure the start and end dates are the same.";
                     ButtonType clickOkay = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
                     Alert invalidInput = new Alert(Alert.AlertType.WARNING, e, clickOkay);
                     invalidInput.showAndWait();
@@ -263,6 +263,9 @@ public class addAppointmentController {
         }
         //validate start not equal to end
         if(startDT.isEqual(endDT)){
+            return true;
+        }
+        if(startDayInt != endDayInt){
             return true;
         }
 
