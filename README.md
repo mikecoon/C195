@@ -9,7 +9,7 @@ Author Info:
 
 IDE and java version details:
 -IntelliJ IDEA 2021.2.3 (Community Edition)
--
+-Java SE 17.0.1
 -javafx: openjfx-11.0.2
 -mysql connector: mysql-connector-java-8.0.26
 
