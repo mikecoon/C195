@@ -125,10 +125,6 @@ public class updateCustomerController {
 
 
 
-        /*
-        updateCustomerCountry.setItems(countryDAO.getCountries());
-        //not sure how to assign a country to a customer when its not in the DB, so ill
-        //updateCustomerCountry.getSelectionModel().select(selectedCustomer.getCountry());
 
         updateCustomerCountry.valueProperty().addListener((obs, init, updated) -> {
             if (updated != null){
@@ -144,9 +140,8 @@ public class updateCustomerController {
         });
 
 
-        //updateCustomerDivision.setItems(customerDAO.getDivisionByCountry(selectedCustomer.getCountry()));
-        //updateCustomerDivision.getSelectionModel().select(selectedCustomer.getDivision());
-        */
+        updateCustomerDivision.setItems(customerDAO.getDivisionByCountry(selectedCustomer.getCountry()));
+        updateCustomerDivision.getSelectionModel().select(selectedCustomer.getDivision());
     }
 
 }

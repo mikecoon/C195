@@ -81,14 +81,14 @@ public class Customer {
     }
 
     /**
-     * @return division
+     * sets the division
      */
     public void setDivision(String division){
         this.division = division;
     }
 
     /**
-     * @return country
+     * sets the country
      */
     public void setCountry(String country) {
         this.country = country;
