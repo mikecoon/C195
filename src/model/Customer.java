@@ -1,5 +1,6 @@
 package model;
 
+/**Class for Customers*/
 public class Customer {
     private Integer id;
     private String name;
@@ -10,6 +11,7 @@ public class Customer {
     private String divisionID;
     private String country;
 
+    /**Customer constructor*/
     public Customer(Integer id, String name, String address, String phoneNumber, String postalCode, String division, String divisionID, String country){
         this.id = id;
         this.name = name;
@@ -22,42 +24,72 @@ public class Customer {
 
     }
 
+    /**
+     * @return id
+     */
     public Integer getId(){
         return id;
     }
 
+    /**
+     * @return name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @return address
+     */
     public String getAddress() {
         return address;
     }
 
+    /**
+     * @return phoneNumber
+     */
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
+    /**
+     * @return postalCode
+     */
     public String getPostalCode() {
         return postalCode;
     }
 
+    /**
+     * @return divisionID
+     */
     public String getDivisionID() {
         return divisionID;
     }
 
+    /**
+     * @return division
+     */
     public String getDivision() {
         return division;
     }
 
+    /**
+     * @return country
+     */
     public String getCountry() {
         return country;
     }
 
+    /**
+     * @return division
+     */
     public void setDivision(String division){
         this.division = division;
     }
 
+    /**
+     * @return country
+     */
     public void setCountry(String country) {
         this.country = country;
     }
