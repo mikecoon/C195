@@ -215,9 +215,15 @@ public class updateAppointmentController {
 
 
         //validate correct date
+
+        //weekend appointments should be allowed.
+        /*
         if(startDayInt < weekBegin || startDayInt > weekEnd || endDayInt < weekBegin || endDayInt > weekEnd){
             return false;
         }
+
+         */
+
         //validate time within business hours
         if(zonedDTstart.isBefore(hoursStart) | zonedDTstart.isAfter(hoursEnd) | zonedDTend.isBefore(hoursStart)
         | zonedDTend.isAfter(hoursEnd) | zonedDTstart.isAfter(hoursEnd)){

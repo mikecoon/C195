@@ -249,9 +249,14 @@ public class addAppointmentController {
 
 
         //validate correct date
+
+        //weekend appointments should be included.
+        /*
         if(startDayInt < weekBegin || startDayInt > weekEnd || endDayInt < weekBegin || endDayInt > weekEnd){
             return true;
         }
+         */
+
         //validate time within business hours
         if(zonedDTstart.isBefore(hoursStart) | zonedDTstart.isAfter(hoursEnd) | zonedDTend.isBefore(hoursStart)
                 | zonedDTend.isAfter(hoursEnd) | zonedDTstart.isAfter(hoursEnd)){
